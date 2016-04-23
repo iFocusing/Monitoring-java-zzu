@@ -176,7 +176,7 @@ public class DataDao {
     public List<DataMapDisplay> searchDataMapByOid(Long lid, Organization organization) throws Exception {
         List<DataMapDisplay> dataMapDisplays=new ArrayList<DataMapDisplay>();
         this.initConnection();
-        String sql="select DISTINCT pole.p_id, data.* ,pole.location,line.name, node.source\n" +
+        String sql="select DISTINCT  pole.*, data.* ,line.name, node.source\n" +
                 "from organization,data,node,pole,line WHERE node.n_id=data.n_id\n" +
                 "                                            and pole.p_id=node.p_id\n" +
                 "                                            and pole.l_id=line.l_id\n" +
@@ -200,15 +200,45 @@ public class DataDao {
             DataDisplay dataDisplay=null;
             List<DataDisplay> dataDisplays =null;
             Double location=rs.getDouble("location");
-            while (rs.getDouble("location")==location) {
-                dataDisplay = new DataDisplay(rs.getLong("p_id"), rs.getLong("d_id"), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getTimestamp("sampling_time")).toString(), rs.getDouble("out_temperature"),
-                        rs.getDouble("wire_temperature"), rs.getDouble("sag"), rs.getDouble("electricity"), rs.getDouble("voltage"),
-                        rs.getDouble("humidity"), rs.getLong("n_id"), rs.getLong("location"), rs.getString("name"), rs.getString("source"));
+            //取第一条记录;
+            dataDisplay = new DataDisplay(
+                    rs.getLong("p_id"),
+                    rs.getLong("d_id"),
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getTimestamp("sampling_time")).toString(),
+                    rs.getDouble("out_temperature"),
+                    rs.getDouble("wire_temperature"),
+                    rs.getDouble("sag"),
+                    rs.getDouble("electricity"),
+                    rs.getDouble("voltage"),
+                    rs.getDouble("humidity"),
+                    rs.getLong("n_id"),
+                    rs.getLong("location"),
+                    rs.getString("name"),
+                    rs.getString("source"));
+            dataDisplays = new ArrayList<DataDisplay>();
+            dataDisplays.add(dataDisplay);
+            //判断下一条记录是不是还是同一根线杆的,如果是的话继续取该线杆的数据放在dataDisplays里面;
+            while (rs.next() && rs.getDouble("location")==location) {
+                dataDisplay = new DataDisplay(
+                        rs.getLong("p_id"),
+                        rs.getLong("d_id"),
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getTimestamp("sampling_time")).toString(),
+                        rs.getDouble("out_temperature"),
+                        rs.getDouble("wire_temperature"),
+                        rs.getDouble("sag"),
+                        rs.getDouble("electricity"),
+                        rs.getDouble("voltage"),
+                        rs.getDouble("humidity"),
+                        rs.getLong("n_id"),
+                        rs.getLong("location"),
+                        rs.getString("name"),
+                        rs.getString("source"));
                 dataDisplays = new ArrayList<DataDisplay>();
                 dataDisplays.add(dataDisplay);
                 location=rs.getDouble("location");
                 rs.next();
             }
+            //下一条数据不上该线杆的,则说明该线杆的数据取完了,接下来取该线杆的相关信息.
             rs.previous();
             DataMapDisplay dataMapDisplay = new DataMapDisplay(
                     dataDisplays,
@@ -217,9 +247,9 @@ public class DataDao {
                     rs.getLong("o_id"),
                     rs.getDouble("longitude"),
                     rs.getDouble("latitude"));
+            //将该线杆的数据list和信息放入存放线路所有线杆数据的listlist里.
             dataMapDisplays.add(dataMapDisplay);
         }
-//        System.out.println("22: "+poleList);
         this.closeConnection();
         return dataMapDisplays;
     }
