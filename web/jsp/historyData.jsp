@@ -16,8 +16,7 @@
 <script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 <%--表格数据加载的js--%>
-
-//如果是由百度地图转过来的,会直接查单独一个线杆的数据,如果不是的话就是全部数据;
+<%--如果是由百度地图转过来的,会直接查单独一个线杆的数据,如果不是的话就是全部数据;--%>
 <script>
     var thisURL = document.URL;
     var  getval =thisURL.split('?')[1];
