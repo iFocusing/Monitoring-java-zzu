@@ -29,7 +29,7 @@
 //        alert("加载map线杆");
         $.ajax({
             type: "post",
-            url: "${basePath}servlet/SearchMapDataServlet",
+            url: "${basePath}servlet/SearchMapLineServlet",
             data: { oid:${oid} },
             dataType: "json",
             cache: false,
@@ -61,6 +61,9 @@
     }
 </script>
 <script type="text/javascript">
+
+
+
     var map = new BMap.Map("container", {enableMapClick:false});//构造底图时，关闭底图可点功能
     function GetData(datalines,data){
 //        var point = new BMap.Point(116.404, 39.915);  // 创建点坐标
@@ -91,8 +94,10 @@
 //
 //        map.addOverlay(curve); //添加到地图中
 //        curve.enableEditing(); //开启编辑功能
+
+        if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
         //实现往地图里面添加线杆标志;
-        var point1=[];
+        var point1=[];//这是为了显示线路;
         //遍历线路,obj是指其中一条线路
         $.each(data, function(idx, obj) {
             var pointss = [];
@@ -103,21 +108,85 @@
                 var point =new BMap.Point(obj2.longitude,obj2.latitude);
                 point1[idx]=point;
                 pointss.push(point);
-                var marker = new BMap.Marker(point);
-                map.addOverlay(marker);    //增加点
-                marker.addEventListener("click",function attribute(e){
-//                var p = e.target;
-//                alert("marker的位置是" + p.getPosition().lng + "," + p.getPosition().lat);
-                    this.openInfoWindow(
-                            new BMap.InfoWindow('我的位置在:经度:'+obj2.longitude+'纬度'+obj2.latitude+';我最新一条数据为:'
-                    )
-                    );
-
-                });
             });
+            var options = {
+                size: '30*30px',
+                shape: BMAP_POINT_SHAPE_STAR,
+                color: '#d340c3'
+            }
+            var pointCollection = new BMap.PointCollection(pointss, options);  // 初始化PointCollection
+            pointCollection.addEventListener('mouseover', function (e) {// 监听点击事件
+                var longitude=e.point.lng;
+                var latitude=e.point.lat;
+                var point = new BMap.Point(longitude, latitude);
+                $.ajax({
+                    type: "post",
+                    url: "${basePath}servlet/SearchMapDataServlet",
+                    data: {longitude:longitude,latitude:latitude},
+                    dataType: "json",
+                    cache: false,
+                    success: function (data) {
+                        GetMapData(data.rows);
+                    },
+                    error: function () {
+                        alert("请求超时，请重试！");
+                    }
+                });
+                function GetMapData(data) {
+                    var content="<table style='font-size: 15px;' border='1' align='center'> "+
+                            " <tr> "+
+                            " <th>线杆编号</th> "+
+                            " <th>收集时间</th> "+
+                            " <th>室外温度</th> "+
+                            " <th>线表温度</th> "+
+                            " <th>弧垂</th> "+
+                            " <th>电流</th> "+
+                            " <th>湿度</th> "+
+                            " <th>节点序号</th> "+
+                            " <th>线杆位置</th> "+
+                            " <th>线路名称</th> "+
+                            " <th>节点组属地址</th> "+
+                            " </tr> "
+                    var titles="";
+                    $.each(data, function(idx, obj) {
+                        titles="线杆"+obj.pid+"的最新数据:";
+                        content=content+"<tr>" +
+                                "<td>"+obj.pid+"</td>" +
+                                "<td>"+obj.samplingTime+"</td>" +
+                                "<td>"+obj.outTemperature+"</td>" +
+                                "<td>"+obj.wireTemperature+"</td>" +
+                                "<td>"+obj.sag+"</td>" +
+                                "<td>"+obj.electricity+"</td>" +
+                                "<td>"+obj.voltage+"</td>" +
+                                "<td>"+obj.nid+"</td>" +
+                                "<td>"+obj.location+"</td>" +
+                                "<td>"+obj.name+"</td>" +
+                                "<td>"+obj.source+"</td>" +
+                                "</tr>";
+                    });
+                    content=content+" </table> ";
+
+
+
+                    var opts = {
+                        width : 1000,     // 信息窗口宽度
+                        title : titles , // 信息窗口标题
+                        enableMessage:true//设置允许信息窗发送短息
+                    };
+                    var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
+                    map.openInfoWindow(infoWindow,point); //开启信息窗口
+                }
+
+
+            });
+            map.addOverlay(pointCollection);  // 添加Overlay
             var polyline = new BMap.Polyline(pointss, {strokeColor:"blue", strokeWeight:5, strokeOpacity:0.5});   //创建折线
             map.addOverlay(polyline);   //增加折线
         });
+
+
+
+
 //      给每条线路添加标签;
         $.each(point1,function (idxfirst,objfirst) {
             var sContent ="该线路名称为:"+datalines[idxfirst].name;
@@ -128,6 +197,9 @@
             var label = new BMap.Label(sContent, opts);  // 创建文本标注对象
             map.addOverlay(label);
         })
+        } else {
+            alert('请在chrome、safari、IE8+以上浏览器查看本示例');
+        }
 
     }
 
@@ -172,6 +244,7 @@
         map.removeControl(overViewOpen);
     }
 </script>
+
 
 </body>
 </html>

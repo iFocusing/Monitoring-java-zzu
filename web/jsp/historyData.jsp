@@ -337,7 +337,7 @@
         <th data-options="field:'nid',width:40,align:'center'">节点序号</th>
         <th data-options="field:'location',width:40,align:'center'">线杆位置</th>
         <th data-options="field:'name',width:50,align:'center'">线路名称</th>
-        <th data-options="field:'source',width:40,align:'center'">节点组数地址</th>
+        <th data-options="field:'source',width:40,align:'center'">节点组属地址</th>
     </tr>
     </thead>
 </table>

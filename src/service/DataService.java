@@ -100,4 +100,8 @@ public class DataService {
         }
         return poleListList;
     }
+
+    public List<DataDisplay> searchData(Double longitude, Double latitude) throws Exception {
+        return dataDao.searchData(longitude,latitude);
+    }
 }
