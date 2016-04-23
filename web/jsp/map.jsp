@@ -18,10 +18,11 @@
         #r-result{width:100%;margin-top:5px;}
         p{margin:5px; font-size:14px;}
     </style>
+    <script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=hK24m3To7xn89fF0mwzGCqRPKe3wksh4"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/CurveLine/1.5/src/CurveLine.min.js"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/custom/stylelist.js"></script>
 </head>
-<script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
 <body>
 <script type="text/javascript">
     $(function(){
@@ -46,8 +47,19 @@
     <input type="button" onclick="add_control1();" value="添加地图类型控件" />
     <input type="button" onclick="delete_control1();" value="删除地图类型控件" />
 </div>
+<div id="r-result1">
+    <div class="optionpanel">
+        <label>选择主题</label>
+        <select id="stylelist" onchange="changeMapStyle(this.value)"></select>
+    </div>
+</div>
 <div id="container"></div>
-
+<script>
+    function changeMapStyle(style){
+        map.setMapStyle({style:style});
+        $('#desc').html(mapstyles[style].desc);
+    }
+</script>
 <script type="text/javascript">
     var map = new BMap.Map("container", {enableMapClick:false});//构造底图时，关闭底图可点功能
     function GetData(datalines,data){
@@ -55,7 +67,17 @@
 //        map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别
         map.centerAndZoom("河南省",12);
         map.enableScrollWheelZoom();//开启鼠标缩放功能
+        //百度地图API功能:初始化模板选择的下拉框
+        var sel = document.getElementById('stylelist');
+        for(var key in mapstyles){
+            var style = mapstyles[key];
+            var item = new  Option(style.title,key);
+            sel.options.add(item);
+        }
+        window.map = map;
 
+        changeMapStyle('midnight')
+        sel.value = 'midnight';
         //百度地图API功能:单击获取点击的经纬度
 //        map.addEventListener("click",function(e){
 //            alert(e.point.lng + "," + e.point.lat);
@@ -71,9 +93,13 @@
 //        curve.enableEditing(); //开启编辑功能
         //实现往地图里面添加线杆标志;
         var point1=[];
+        //遍历线路,obj是指其中一条线路
         $.each(data, function(idx, obj) {
             var pointss = [];
+            //遍历一条线路上的线杆, obj2是指其中一根线杆
             $.each(obj,function (idx2, obj2) {
+                //取该线杆的最新一条数据:
+//                alert(obj2.dataDisplay[0].samplingTime);
                 var point =new BMap.Point(obj2.longitude,obj2.latitude);
                 point1[idx]=point;
                 pointss.push(point);
@@ -82,7 +108,11 @@
                 marker.addEventListener("click",function attribute(e){
 //                var p = e.target;
 //                alert("marker的位置是" + p.getPosition().lng + "," + p.getPosition().lat);
-                    this.openInfoWindow(new BMap.InfoWindow('我是第'+ (obj2.location) +'个标注'));
+                    this.openInfoWindow(
+                            new BMap.InfoWindow('我的位置在:经度:'+obj2.longitude+'纬度'+obj2.latitude+';我最新一条数据为:'
+                    )
+                    );
+
                 });
             });
             var polyline = new BMap.Polyline(pointss, {strokeColor:"blue", strokeWeight:5, strokeOpacity:0.5});   //创建折线
