@@ -60,6 +60,26 @@
         $('#desc').html(mapstyles[style].desc);
     }
 </script>
+
+<script>
+    function moreData(data){
+        var url="../jsp/historyData.jsp?pid=";
+        url=url+data;
+        text="查看历史数据";
+        var jq = top.jQuery;
+        if (jq("#tabs").tabs('exists', text)) {
+            jq("#tabs").tabs('select', text);
+        } else {
+            jq("#tabs").tabs('add', {
+                title: text,
+                content: '<iframe  src="' + url + '" frameBorder="0" border="0"  style="width: 100%; height: 100%;" noResize/>',
+                closable: true
+                //href: url
+            });
+        }
+//
+    }
+</script>
 <script type="text/javascript">
 
 
@@ -133,7 +153,15 @@
                     }
                 });
                 function GetMapData(data) {
-                    var content="<table style='font-size: 15px;' border='1' align='center'> "+
+                    var content=
+                            "<div>" +
+                            "线杆"+data[0].pid+"的最新数据:"+
+                            "<a href='javascript:void(0);'"+"onclick='moreData("+ data[0].pid+
+                            ")'>"+
+                            "更多数据</a>"+
+                            "</div>"+
+                            "<div>"+
+                            "<table style='font-size: 15px;' border='1' align='center'> "+
                             " <tr> "+
                             " <th>线杆编号</th> "+
                             " <th>收集时间</th> "+
@@ -149,7 +177,6 @@
                             " </tr> "
                     var titles="";
                     $.each(data, function(idx, obj) {
-                        titles="线杆"+obj.pid+"的最新数据:";
                         content=content+"<tr>" +
                                 "<td>"+obj.pid+"</td>" +
                                 "<td>"+obj.samplingTime+"</td>" +
@@ -164,14 +191,12 @@
                                 "<td>"+obj.source+"</td>" +
                                 "</tr>";
                     });
-                    content=content+" </table> ";
+                    content=content+" </table></div> ";
 
 
 
                     var opts = {
                         width : 1000,     // 信息窗口宽度
-                        title : titles , // 信息窗口标题
-                        enableMessage:true//设置允许信息窗发送短息
                     };
                     var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
                     map.openInfoWindow(infoWindow,point); //开启信息窗口

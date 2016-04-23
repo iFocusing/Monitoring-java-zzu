@@ -104,4 +104,8 @@ public class DataService {
     public List<DataDisplay> searchData(Double longitude, Double latitude) throws Exception {
         return dataDao.searchData(longitude,latitude);
     }
+
+    public List<DataDisplay> searchData(Long pid) throws Exception {
+        return dataDao.searchData(pid);
+    }
 }

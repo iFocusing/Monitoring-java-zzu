@@ -16,6 +16,21 @@
 <script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 <%--表格数据加载的js--%>
+
+//如果是由百度地图转过来的,会直接查单独一个线杆的数据,如果不是的话就是全部数据;
+<script>
+    var thisURL = document.URL;
+    var  getval =thisURL.split('?')[1];
+    var showval= getval.split("=")[1];
+    function  showvalf(){
+//        alert(showval);
+        if(showval!=null || showval!=""){
+            $("#pole").combobox("setValue",showval);
+            FindData();
+        }
+    }
+</script>
+
 <script>
     function FindData(){
 //        alert("组织"+$('#organization').combobox('getValue')+"地区"+$('#region').combobox('getValue')+"线路"+$('#line').combobox('getValue')+"线杆"+$('#pole').combobox('getValue'));
@@ -280,7 +295,7 @@
         $("#endTime").datebox("setValue",'6/1/2016 00:00:00');
     });
 </script>
-<body>
+<body onload="showvalf()">
 <div id="searchtool" style="padding:5px">
     <span>组织:</span> <input class="easyui-combobox" style="width:80px" name="organization" id="organization">
     <span>地区:</span> <input class="easyui-combobox" style="width:80px" name="region" id="region">
