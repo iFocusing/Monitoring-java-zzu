@@ -85,6 +85,13 @@ public class DataService {
         return DataListList;
     }
 
+    public List<DataDisplay> searchChartData(Long pid) throws Exception {
+        List<DataDisplay> dataList =dataDao.searchData(pid);
+        return dataList;
+    }
+
+
+
 
     public List<List<DataMapDisplay>> searchDataMapByOid(Long oid) throws Exception {
         List<Line> lineList=lineDao.searchLine(organizationDao.findOne(oid)) ;
@@ -108,4 +115,10 @@ public class DataService {
     public List<DataDisplay> searchData(Long pid) throws Exception {
         return dataDao.searchData(pid);
     }
+
+    public List<DataDisplay> searchCurrentDataByPid(Long pid) throws Exception {
+        return dataDao.searchCurrentData(pid);
+    }
+
+
 }

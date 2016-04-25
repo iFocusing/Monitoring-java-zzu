@@ -302,6 +302,30 @@ public class DataDao {
         return dataList;
     }
 
+    public List<DataDisplay> searchCurrentData(Long pid) throws Exception {
+
+        List<DataDisplay> dataList=new ArrayList<>();
+        this.initConnection();
+//        String sql="select pole.p_id, data.* ,pole.location,line.name,node.source from data,node,pole,line where pole.p_id=node.p_id and pole.l_id=line.l_id and node.n_id=data.n_id and data.sampling_time>=now()-101010101 and pole.o_id=?";
+        String sql="select DISTINCT pole.p_id, data.* ,pole.location,line.name, node.source\n" +
+                "        from organization,data,node,pole,line WHERE node.n_id=data.n_id\n" +
+                "        and pole.p_id=node.p_id\n" +
+                "        and pole.l_id=line.l_id\n" +
+                "        AND pole.p_id=?\n" +
+                "        AND sampling_time <= now()  AND sampling_time >=date_sub(now(), interval '10' day_second)";
+        PreparedStatement ps=conn.prepareStatement(sql);
+        ps.setDouble(1, pid);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()){
+            DataDisplay data=new DataDisplay(rs.getLong("p_id"),rs.getLong("d_id"),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rs.getTimestamp("sampling_time")).toString(),rs.getDouble("out_temperature"),
+                    rs.getDouble("wire_temperature"),rs.getDouble("sag"),rs.getDouble("electricity"),rs.getDouble("voltage"),
+                    rs.getDouble("humidity"),rs.getLong("n_id"),rs.getLong("location"),rs.getString("name"),rs.getString("source"));
+            dataList.add(data);
+        }
+        this.closeConnection();
+        return dataList;
+    }
+
     /**
      * 关闭数据库
      * @return

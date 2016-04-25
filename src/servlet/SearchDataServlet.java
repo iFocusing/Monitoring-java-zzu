@@ -22,7 +22,7 @@ import net.sf.json.JSONObject;
 /**
  * Created by Administrator on 2016/4/10.
  */
-@WebServlet(name = "SearchDataServlet",urlPatterns = {"/servlet/SearchDataServlet","/servlet/SearchChartDataServlet"})
+@WebServlet(name = "SearchDataServlet",urlPatterns = {"/servlet/SearchDataServlet","/servlet/SearchChartDataServlet","/servlet/SearchChartCurrentDataServlet","/servlet/SearchChartPreviousCurrentDataServlet"})
 public class SearchDataServlet extends HttpServlet {
     DataService dataService=new DataService();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -279,7 +279,48 @@ public class SearchDataServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             }
+        }
 
+        if("/servlet/SearchChartPreviousCurrentDataServlet".equals(path)) {
+            //查询条件:线路\地区\组织\时间都为空--查询pid的所有数据
+            System.out.println("实时数据展示");
+            HChartUtil hChartUtil = new HChartUtil();
+            try {
+                System.out.println("查询条件:线路\\地区\\组织\\时间都为空--查询pid的所有数据");
+                Long pid =Long.valueOf( request.getParameter("pid"));
+                List<DataDisplay> displayList = null;
+                displayList = dataService.searchChartData(pid);
+                JSONObject jsonobject = new JSONObject();
+                jsonobject.put("total", displayList.size());
+                jsonobject.put("rows", hChartUtil.getCurrentData(displayList));
+//                    System.out.println("rows::"+hChartUtil.getHistoryData(listList));
+                jsonobject.put("timelist", hChartUtil.getCurrentTimeList(displayList));
+                PrintWriter out = response.getWriter();
+                System.out.print("jsonobject:"+jsonobject);
+                out.write(jsonobject.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if("/servlet/SearchChartCurrentDataServlet".equals(path)) {
+            System.out.println("实时更新(5s)数据展示");
+            Long pid=Long.valueOf(request.getParameter("pid"));
+            HChartUtil hChartUtil = new HChartUtil();
+            List<DataDisplay> displayList = null;
+            //查询条件:pid不为空
+            try {
+                displayList =dataService.searchCurrentDataByPid(pid);
+                JSONObject jsonobject = new JSONObject();
+                jsonobject.put("total", displayList.size());
+                jsonobject.put("rows", hChartUtil.getCurrentData(displayList));
+                jsonobject.put("timelist", hChartUtil.getCurrentTimeList(displayList));
+                PrintWriter out = response.getWriter();
+                System.out.print("jsonobject:"+jsonobject);
+                out.write(jsonobject.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         }
 
