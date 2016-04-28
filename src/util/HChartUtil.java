@@ -141,7 +141,7 @@ public class HChartUtil {
         data += "{ name:'" + wireTemperature + "', data:[";
         for(List<DataDisplay> piTagList : listList){
             if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(piTagList.size()-1).getWireTemperature()+",";
+                data += "" +piTagList.get(0).getWireTemperature()+",";
             }
 
         }
@@ -156,7 +156,7 @@ public class HChartUtil {
         data += "{ name:'" + outTemperature + "', data:[";
         for(List<DataDisplay> piTagList : listList){
             if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(piTagList.size()-1).getOutTemperature()+",";
+                data += "" +piTagList.get(0).getOutTemperature()+",";
             }
 
         }
@@ -171,7 +171,7 @@ public class HChartUtil {
         data += "{ name:'" + sag + "', data:[";
         for(List<DataDisplay> piTagList : listList){
             if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(piTagList.size()-1).getSag()+",";
+                data += "" +piTagList.get(0).getSag()+",";
             }
 
         }
@@ -186,7 +186,7 @@ public class HChartUtil {
         data += "{ name:'" + electricity + "', data:[";
         for(List<DataDisplay> piTagList : listList){
             if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(piTagList.size()-1).getElectricity()+",";
+                data += "" +piTagList.get(0).getElectricity()+",";
             }
 
         }
@@ -200,7 +200,7 @@ public class HChartUtil {
         data += "{ name:'" + voltage + "', data:[";
         for(List<DataDisplay> piTagList : listList){
             if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(piTagList.size()-1).getVoltage()+",";
+                data += "" +piTagList.get(0).getVoltage()+",";
             }
 
         }
@@ -214,7 +214,7 @@ public class HChartUtil {
         data += "{ name:'" + humidity + "', data:[";
         for(List<DataDisplay> piTagList : listList){
             if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(piTagList.size()-1).getHumidity()+",";
+                data += "" +piTagList.get(0).getHumidity()+",";
             }
 
         }
@@ -255,8 +255,8 @@ public class HChartUtil {
 
     /**
      * 用户hcharts实时数据显示，动态更新数据
-     * @param time
-     * @param value
+     * @param displayList
+     * @param displayList
      * @return
      */
 //    public String getCurrentData(Date time, double value){

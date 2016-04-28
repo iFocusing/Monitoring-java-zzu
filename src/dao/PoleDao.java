@@ -30,7 +30,7 @@ public class PoleDao {
         List<Pole> poleList=new ArrayList<Pole>();
 //        System.out.println("2: "+line.getName());
         this.initConnection();
-        String sql="SELECT DISTINCT pole.* FROM pole,admin_region WHERE pole.a_id=admin_region.a_id and (admin_region.a_id=? OR admin_region.parent_ids like ?)  and o_id IN (SELECT organization.o_id FROM organization WHERE organization.o_id=? OR organization.parent_ids like ?) and pole.l_id=?";
+        String sql="SELECT DISTINCT pole.* FROM pole,admin_region WHERE pole.a_id=admin_region.a_id and (admin_region.a_id=? OR admin_region.parent_ids like ?)  and o_id IN (SELECT organization.o_id FROM organization WHERE organization.o_id=? OR organization.parent_ids like ?) and pole.l_id=? order BY pole.location";
 
         PreparedStatement ps=conn.prepareStatement(sql);
         ps.setLong(1, adminRegion.getAid());
@@ -69,6 +69,26 @@ public class PoleDao {
         return poleList;
     }
 
+
+    public List<Pole> searchPoleMapByLidOid(Long lid, Organization organization) throws Exception {
+        List<Pole> poleList=new ArrayList<Pole>();
+        this.initConnection();
+        String sql="SELECT DISTINCT pole.* FROM pole WHERE o_id IN (SELECT organization.o_id FROM organization WHERE organization.o_id=? OR organization.parent_ids like ?) and l_id=?";
+        PreparedStatement ps=conn.prepareStatement(sql);
+        ps.setLong(1,organization.getOid());
+        ps.setString(2, organization.getParentIds()+organization.getOid()+"/%");
+        ps.setLong(3,lid);
+        ResultSet rs=ps.executeQuery();
+        while (rs.next()) {
+            Pole pole = new Pole(rs.getLong("p_id"),rs.getDouble("longitude"),rs.getDouble("latitude"),rs.getLong("location"),
+                    rs.getLong("l_id"),rs.getLong("a_id"),rs.getLong("o_id"));
+            poleList.add(pole);
+        }
+//        System.out.println("22: "+poleList);
+        this.closeConnection();
+        return poleList;
+    }
+
     /**
      * 关闭数据库
      * @return
@@ -78,10 +98,9 @@ public class PoleDao {
     public void closeConnection() throws Exception{
         conn.close();
     }
-
-
-
 }
+
+
 
 // 百度地图API功能:创建标注
 //        var pointArray = new Array();

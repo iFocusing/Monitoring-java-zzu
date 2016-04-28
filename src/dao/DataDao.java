@@ -5,7 +5,9 @@ import bean.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Administrator on 2016/4/10.
@@ -28,7 +30,7 @@ public class DataDao {
 //        System.out.println("3:"+pid);
         List<DataDisplay> dataList=new ArrayList<>();
         this.initConnection();
-        String sql="select pole.p_id, data.* ,pole.location,line.name,node.source from data,node,pole,line where node.p_id=? and pole.p_id=node.p_id and pole.l_id=line.l_id and node.n_id=data.n_id and data.sampling_time<=? and data.sampling_time>=?";
+        String sql="select pole.p_id, data.* ,pole.location,line.name,node.source from data,node,pole,line where node.p_id=? and pole.p_id=node.p_id and pole.l_id=line.l_id and node.n_id=data.n_id and data.sampling_time<=? and data.sampling_time>=? ORDER BY data.sampling_time desc";
         PreparedStatement ps=conn.prepareStatement(sql);
         ps.setLong(1,pid);
         ps.setTimestamp(2,endTime);
@@ -171,8 +173,12 @@ public class DataDao {
         return dataList;
     }
 
-
-
+/*这个是废弃的代码,可以删了;
+            * 这里有个问题可以优化一下:就是我只需要返回一个List<List<Pole>>就可以了,
+            * 而不需要再定义一个数据展示的bean,也不用在数据库中拼如此麻烦的数据,
+            * 因为这里只是用来在地图上显示线路,添加线杆的;
+            * 至于线杆的数据是由前台异步加载得到的;(之所以我这样做是因为想要将线路和数据一起加载,这样并不合理;)
+            这个问题已经优化过了;
     public List<DataMapDisplay> searchDataMapByOid(Long lid, Organization organization) throws Exception {
         List<DataMapDisplay> dataMapDisplays=new ArrayList<DataMapDisplay>();
         this.initConnection();
@@ -252,9 +258,9 @@ public class DataDao {
         }
         this.closeConnection();
         return dataMapDisplays;
-    }
+    }*/
 
-
+    /*这个是百度地图上线杆的数据展示*/
     public List<DataDisplay> searchData(Double longitude, Double latitude) throws Exception {
         List<DataDisplay> dataList=new ArrayList<>();
         this.initConnection();
@@ -287,7 +293,7 @@ public class DataDao {
                 "from organization,data,node,pole,line WHERE node.n_id=data.n_id\n" +
                 "                                            and pole.p_id=node.p_id\n" +
                 "                                            and pole.l_id=line.l_id\n" +
-                "                                            AND pole.p_id=?  ORDER  BY sampling_time";
+                "                                            AND pole.p_id=?  ORDER  BY sampling_time DESC";
         PreparedStatement ps=conn.prepareStatement(sql);
         ps.setDouble(1, pid);
         ResultSet rs = ps.executeQuery();
@@ -297,7 +303,6 @@ public class DataDao {
                     rs.getDouble("humidity"),rs.getLong("n_id"),rs.getLong("location"),rs.getString("name"),rs.getString("source"));
             dataList.add(data);
         }
-        System.out.println("searchAllData:"+dataList);
         this.closeConnection();
         return dataList;
     }
@@ -305,13 +310,13 @@ public class DataDao {
 
     public List<DataDisplay> searchPreviousData(Long pid) throws Exception {
         List<DataDisplay> dataList=new ArrayList<>();
+        List<DataDisplay> dataList1=new ArrayList<>();
         this.initConnection();
-//        String sql="select pole.p_id, data.* ,pole.location,line.name,node.source from data,node,pole,line where pole.p_id=node.p_id and pole.l_id=line.l_id and node.n_id=data.n_id and data.sampling_time>=now()-101010101 and pole.o_id=?";
         String sql="select DISTINCT pole.p_id, data.* ,pole.location,line.name, node.source\n" +
                 "from organization,data,node,pole,line WHERE node.n_id=data.n_id\n" +
                 "                                            and pole.p_id=node.p_id\n" +
                 "                                            and pole.l_id=line.l_id\n" +
-                "                                            AND pole.p_id=?  ORDER  BY sampling_time";
+                "                                            AND pole.p_id=?  ORDER  BY sampling_time desc limit 10";
         PreparedStatement ps=conn.prepareStatement(sql);
         ps.setDouble(1, pid);
         ResultSet rs = ps.executeQuery();
@@ -322,6 +327,15 @@ public class DataDao {
             dataList.add(data);
         }
         System.out.println("searchAllData:"+dataList);
+        Iterator it = dataList.iterator();
+        ListIterator<DataDisplay> li = dataList.listIterator();// 获得ListIterator对象
+        for (li = dataList.listIterator(); li.hasNext();) {// 将游标定位到列表结尾
+            li.next();
+        }
+        for (; li.hasPrevious();) {// 逆序输出列表中的元素
+            dataList1.add(li.previous());
+        }
+        System.out.println("searchAllData:"+dataList1);
         this.closeConnection();
         return dataList;
     }

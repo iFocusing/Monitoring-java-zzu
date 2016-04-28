@@ -90,20 +90,24 @@ public class DataService {
         return dataList;
     }
 
+    public List<DataDisplay> searchChartPreviousData(Long pid) throws Exception {
+        List<DataDisplay> dataList =dataDao.searchPreviousData(pid);
+        return dataList;
+    }
 
 
 
-    public List<List<DataMapDisplay>> searchDataMapByOid(Long oid) throws Exception {
+    public List<List<Pole>> searchPoleMapByOid(Long oid) throws Exception {
         List<Line> lineList=lineDao.searchLine(organizationDao.findOne(oid)) ;
-        List<List<DataMapDisplay>> poleListList = new ArrayList<>();
+        List<List<Pole>> poleListList = new ArrayList<>();
         List<Long> lids=new ArrayList<Long>();
         for(int i=0;i<lineList.size();i++){
             lids.add(lineList.get(i).getLid());
         }
         for (Long lid : lids) {
             System.out.println(lid);
-            List<DataMapDisplay> dataList =dataDao.searchDataMapByOid(lid,organizationDao.findOne(oid));
-            poleListList.add(dataList);
+            List<Pole> poleList =poleDao.searchPoleMapByLidOid(lid,organizationDao.findOne(oid));
+            poleListList.add(poleList);
         }
         return poleListList;
     }

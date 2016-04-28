@@ -289,7 +289,7 @@ public class SearchDataServlet extends HttpServlet {
                 System.out.println("查询条件:线路\\地区\\组织\\时间都为空--查询pid的所有数据");
                 Long pid =Long.valueOf( request.getParameter("pid"));
                 List<DataDisplay> displayList = null;
-                displayList = dataService.searchChartData(pid);
+                displayList = dataService.searchChartPreviousData(pid);
                 JSONObject jsonobject = new JSONObject();
                 jsonobject.put("total", displayList.size());
                 jsonobject.put("rows", hChartUtil.getCurrentData(displayList));

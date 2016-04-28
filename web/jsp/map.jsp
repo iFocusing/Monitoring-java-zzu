@@ -123,7 +123,7 @@
             var pointss = [];
             //遍历一条线路上的线杆, obj2是指其中一根线杆
             $.each(obj,function (idx2, obj2) {
-                //取该线杆的最新一条数据:
+                //取该线杆的最新3条数据:
 //                alert(obj2.dataDisplay[0].samplingTime);
                 var point =new BMap.Point(obj2.longitude,obj2.latitude);
                 point1[idx]=point;
