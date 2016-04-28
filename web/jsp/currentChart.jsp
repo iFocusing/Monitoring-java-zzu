@@ -144,7 +144,7 @@
     //////////////////////////////////////////////////////////////////////
     function GetseriesValue() {
         var pid=$('#pole').combobox('getValue');
-        alert(pid);
+//        alert(pid);
         $.ajax({
             type: "post",
             url: "${basePath}servlet/SearchChartPreviousCurrentDataServlet",
@@ -153,7 +153,7 @@
             cache: false,
             success: function (result) {
                 if(result != null && result != "null"){
-                    alert(result);
+//                    alert(result);
                     GetData(result,pid);
                 }
 //
@@ -208,7 +208,7 @@
                         marginRight: 10,
                         events: {
                             load: function() {
-                                var timesRun = 0;
+                               var timesRun = 0;
                                 var series = this.series[0];
                                 intervalTime = setInterval(function() {
                                     timesRun += 1;
@@ -227,15 +227,21 @@
                                         success: function (result) {
                                             if(result.total != 0 ){
 //                                                alert("5s刷新结果"+result);
-                                                $.each(result.timelist,function (index,obj) {
-                                                    alert(obj);
-                                                    $.each(result.rows,function (index2,obj2) {
-                                                        alert(obj+obj2[index2]);
-                                                        series.addPoint(obj,obj2[index2], true, true);
-                                                    });
+                                                $.each(dataTmp.rows,function (index,obj) {
+                                                        time1= dataTmp.timelist[index];
+
+                                                        var  str=time1.toString();
+                                                        str =  str.replace(/-/g,"/");
+                                                        //// str =  str.replace("T"," ");
+                                                        var oDate1 = new Date(str);
+//                                                       alert("下标:"+i+"时间:"+time1+"字符串:"+str+oDate1.getTime());
+                                                         time=oDate1.getTime();
+                                                    alert(time1+"he"+time);
+                                                        series.addPoint([Number(time),Number(obj)], true, true);
+//                                                    alert("新数据已添加,循环下标:"+index+"时间:"+time1+"字符串:"+str+"和"+time);
                                                 });
                                             }else{
-                                                alert("近期5s没有数据");
+//                                                alert("近期5s没有数据");
                                             }
                                         },
                                         error: function () {
@@ -247,6 +253,8 @@
 //                                    series.addPoint([x, y], true, true);
 
                                 }, 5000);// 5s更新一次
+//                                var series = this.series[0]; setInterval(function() { var x = (new Date()).getTime(), // current time
+//                                        y = Math.random(); series.addPoint([x, y], true, true); }, 1000);
                             }
                         }
                     },
@@ -254,10 +262,8 @@
                         text: '实时数据'
                     },
                     xAxis: {
-                        gridLineWidth: 1,
-                        lineColor: '#000',
-                        tickColor: '#000',
-                        categories:dataTmp.timelist
+                        type: 'datetime',
+                        tickPixelInterval: 150
                     },
                     yAxis: {
                         title: {
@@ -269,7 +275,13 @@
                             color: '#808080'
                         }]
                     },
-
+                    tooltip: {
+                        formatter: function() {
+                            return '<b>'+ this.series.name +'</b><br/>'+
+                                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
+                                    Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     legend: {
                         layout: 'vertical',
                         align: 'right',
@@ -279,10 +291,26 @@
                     exporting: {
                         enabled: false
                     },
-                    series: dataTmp.rows
+                    series:
+                    [{ name: '线表温度 data',
+                       data: (function() { // generate an array of random data
+                            var data = [], time;
+                            $.each(dataTmp.rows,function (i,obj) {
+                                time1= dataTmp.timelist[i];
+
+                                var  str=time1.toString();
+                                str =  str.replace(/-/g,"/");
+                                //// str =  str.replace("T"," ");
+                                var oDate1 = new Date(str);
+//                                alert("下标:"+i+"时间:"+time1+"字符串:"+str+oDate1.getTime());
+                                time=oDate1.getTime();
+                                { data.push({ x: time, y: obj }); }
+                            });
+                            return data;
+                       })()
+                    }]
                 });
             });
-
         });
     }
 
