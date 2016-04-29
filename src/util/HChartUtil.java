@@ -343,25 +343,19 @@ public class HChartUtil {
         names[5]="电流(A)";
         if(dataDisplay != null){
             for(int i=0;i<names.length;i++){
-                data += "{ name:'" + names[i] + "', data:";
+                data += "{ name:'" + names[i] + "', time:";
                 if(i==0) {
-                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getWireTemperature() + "],";
+                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ", value:" + dataDisplay.getWireTemperature() + "},";
                 }else if (i==1){
-                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getOutTemperature() + "],";
+                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getOutTemperature() + "},";
                 }else if (i==2){
-                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getSag() + "],";
+                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getSag() + "},";
                 }else if (i==3){
-                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getHumidity() + "],";
+                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getHumidity() + "},";
                 }else if (i==4){
-                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getVoltage() + "],";
+                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getVoltage() + "},";
                 }else if (i==5){
-                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getElectricity() + "],";
-                }
-                // 去掉最后的','
-                if(data.endsWith(",")){
-                    data = data.substring(0, data.length()-1)+ "},";
-                }else{
-                    data += "},";
+                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getElectricity() + "},";
                 }
             }
         }

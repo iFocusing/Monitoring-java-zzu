@@ -235,7 +235,11 @@
                                         success: function (result) {
                                             if(result.total != 0 ){
                                                $.each(result.rows,function (index,obj) {
-                                                    getMoreDate(obj.data,all[index]);
+                                                   var newPoint={
+                                                       x:Number(result.rows[index].time),
+                                                       y:Number(result.rows[index].value)
+                                                   }
+                                                    getMoreDate(newPoint,all[index]);
                                                })
                                             }else{
 //                                                alert("近期5s没有数据");

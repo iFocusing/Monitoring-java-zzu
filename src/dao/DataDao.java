@@ -337,7 +337,7 @@ public class DataDao {
         }
         System.out.println("searchAllData:"+dataList1);
         this.closeConnection();
-        return dataList;
+        return dataList1;
     }
 
     public DataDisplay searchCurrentData(Long pid) throws Exception {
