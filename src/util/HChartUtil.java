@@ -1,5 +1,6 @@
 package util;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -263,33 +264,66 @@ public class HChartUtil {
 //        return time == null ? "null" : time.getTime() + "," + value;
 //    }
 
-    public String getCurrentPreviousData(List<DataDisplay> displayList) {
+    public String getCurrentPreviousData(List<DataDisplay> displayList) throws ParseException {
+        TransferTime transferTime=new TransferTime();
         String data = "[";
+        String[] names= new String[6];
+        names[0]="线表温度(°C)";
+        names[1]="室外温度(°C)";
+        names[2]="弧垂(m)";
+        names[3]="湿度(RH%)";
+        names[4]="电压(V)";
+        names[5]="电流(A)";
             if(displayList != null && displayList.size() > 0){
-                for(DataDisplay piTag : displayList){
-                    data += "" + piTag.getWireTemperature()+",";
-                }
-                // 去掉最后的','
-                if(data.endsWith(",")){
-                    data = data.substring(0, data.length()-1);
+                for(int i=0;i<names.length;i++){
+                    data += "{ name:'" + names[i] + "', data:[";
+                    if(i==0) {
+                        for (DataDisplay piTag : displayList) {
+                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getWireTemperature() + "],";
+
+                        }
+                    }else if (i==1){
+                        for (DataDisplay piTag : displayList) {
+                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getOutTemperature() + "],";
+
+                        }
+                    }else if (i==2){
+                        for (DataDisplay piTag : displayList) {
+                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getSag() + "],";
+
+                        }
+                    }else if (i==3){
+                        for (DataDisplay piTag : displayList) {
+                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getHumidity() + "],";
+
+                        }
+                    }else if (i==4){
+                        for (DataDisplay piTag : displayList) {
+                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getVoltage() + "],";
+
+                        }
+                    }else if (i==5){
+                        for (DataDisplay piTag : displayList) {
+                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getElectricity() + "],";
+
+                        }
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1)+ "]},";
+                    }else{
+                        data += "]},";
+                    }
                 }
             }
-        data += "]";
+        // 去掉最后一个','
+        if(data.endsWith(",")){
+            data = data.substring(0, data.length()-1);
+        }
+        data=data+"]";
         System.out.println(data);
         return data;
     }
-    //一个点的数据时间list
-    public List<String> getCurrentPreviousTimeList(List<DataDisplay> displayList) {
-        List<String> timeList = new ArrayList<String>();
-        if(displayList != null && displayList.size() > 0){
-            for(DataDisplay dataDisplay : displayList){
-                timeList.add(dataDisplay.getSamplingTime().toString());
-            }
-        }
-        return timeList;
-    }
-
-
 
     /**
      * 用户hcharts实时数据显示，动态更新的数据
@@ -297,21 +331,47 @@ public class HChartUtil {
      * @return
      */
     //最新的一条数据的时间
-    public String getCurrentData(DataDisplay dataDisplay) {
-        String data = null;
-        data =dataDisplay.getWireTemperature()+"";
+    public String getCurrentData(DataDisplay dataDisplay) throws ParseException {
+        TransferTime transferTime=new TransferTime();
+        String data = "[";
+        String[] names= new String[6];
+        names[0]="线表温度(°C)";
+        names[1]="室外温度(°C)";
+        names[2]="弧垂(m)";
+        names[3]="湿度(RH%)";
+        names[4]="电压(V)";
+        names[5]="电流(A)";
+        if(dataDisplay != null){
+            for(int i=0;i<names.length;i++){
+                data += "{ name:'" + names[i] + "', data:";
+                if(i==0) {
+                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getWireTemperature() + "],";
+                }else if (i==1){
+                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getOutTemperature() + "],";
+                }else if (i==2){
+                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getSag() + "],";
+                }else if (i==3){
+                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getHumidity() + "],";
+                }else if (i==4){
+                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getVoltage() + "],";
+                }else if (i==5){
+                        data += "[" + transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + "," + dataDisplay.getElectricity() + "],";
+                }
+                // 去掉最后的','
+                if(data.endsWith(",")){
+                    data = data.substring(0, data.length()-1)+ "},";
+                }else{
+                    data += "},";
+                }
+            }
+        }
+        // 去掉最后一个','
+        if(data.endsWith(",")){
+            data = data.substring(0, data.length()-1);
+        }
+        data=data+"]";
         System.out.println(data);
         return data;
     }
-    //最新的一条数据的时间
-    public String getCurrentTimeList(DataDisplay dataDisplay) {
-        String time = null;
-        if(dataDisplay != null){
-            time=dataDisplay.getSamplingTime()+"";
-        }
-        System.out.println(time);
-        return time;
-    }
-
 
 }

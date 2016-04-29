@@ -25,7 +25,11 @@ public class TransferTime {
     }
 
 
-
+    public Date tansfer1(String timestamp) throws ParseException {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟
+        java.util.Date date=sdf.parse(timestamp);
+        return date;
+    }
 }
 
 

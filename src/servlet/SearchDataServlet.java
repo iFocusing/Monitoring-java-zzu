@@ -294,9 +294,8 @@ public class SearchDataServlet extends HttpServlet {
                 jsonobject.put("total", displayList.size());
                 jsonobject.put("rows", hChartUtil.getCurrentPreviousData(displayList));
 //                    System.out.println("rows::"+hChartUtil.getHistoryData(listList));
-                jsonobject.put("timelist", hChartUtil.getCurrentPreviousTimeList(displayList));
                 PrintWriter out = response.getWriter();
-                System.out.print("jsonobject:"+jsonobject);
+                System.out.println("jsonobject:"+jsonobject);
                 out.write(jsonobject.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -317,7 +316,6 @@ public class SearchDataServlet extends HttpServlet {
                     System.out.println("有数据???");
                     jsonobject.put("total", 1);
                     jsonobject.put("rows", hChartUtil.getCurrentData(dataDisplay));
-                    jsonobject.put("timelist", hChartUtil.getCurrentTimeList(dataDisplay));
                 }else{
                     jsonobject.put("total", 0);
                 }
