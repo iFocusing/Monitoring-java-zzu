@@ -120,7 +120,7 @@ public class DataService {
         return dataDao.searchData(pid);
     }
 
-    public List<DataDisplay> searchCurrentDataByPid(Long pid) throws Exception {
+    public DataDisplay searchCurrentDataByPid(Long pid) throws Exception {
         return dataDao.searchCurrentData(pid);
     }
 

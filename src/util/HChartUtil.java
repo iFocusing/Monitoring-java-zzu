@@ -254,7 +254,7 @@ public class HChartUtil {
 
 
     /**
-     * 用户hcharts实时数据显示，动态更新数据
+     * 用户hcharts实时数据显示，直接加载的数据
      * @param displayList
      * @param displayList
      * @return
@@ -263,7 +263,7 @@ public class HChartUtil {
 //        return time == null ? "null" : time.getTime() + "," + value;
 //    }
 
-    public String getCurrentData(List<DataDisplay> displayList) {
+    public String getCurrentPreviousData(List<DataDisplay> displayList) {
         String data = "[";
             if(displayList != null && displayList.size() > 0){
                 for(DataDisplay piTag : displayList){
@@ -278,11 +278,8 @@ public class HChartUtil {
         System.out.println(data);
         return data;
     }
-
-
-
     //一个点的数据时间list
-    public List<String> getCurrentTimeList(List<DataDisplay> displayList) {
+    public List<String> getCurrentPreviousTimeList(List<DataDisplay> displayList) {
         List<String> timeList = new ArrayList<String>();
         if(displayList != null && displayList.size() > 0){
             for(DataDisplay dataDisplay : displayList){
@@ -291,4 +288,30 @@ public class HChartUtil {
         }
         return timeList;
     }
+
+
+
+    /**
+     * 用户hcharts实时数据显示，动态更新的数据
+     * @param dataDisplay
+     * @return
+     */
+    //最新的一条数据的时间
+    public String getCurrentData(DataDisplay dataDisplay) {
+        String data = null;
+        data =dataDisplay.getWireTemperature()+"";
+        System.out.println(data);
+        return data;
+    }
+    //最新的一条数据的时间
+    public String getCurrentTimeList(DataDisplay dataDisplay) {
+        String time = null;
+        if(dataDisplay != null){
+            time=dataDisplay.getSamplingTime()+"";
+        }
+        System.out.println(time);
+        return time;
+    }
+
+
 }

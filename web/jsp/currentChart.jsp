@@ -208,8 +208,11 @@
                         marginRight: 10,
                         events: {
                             load: function() {
-                               var timesRun = 0;
+                                var all1 = this.series[0].options.data;
                                 var series = this.series[0];
+                                alert("all1:(这个是之前的数据)"+all1);
+                                alert("series:(这个是之前的series)"+series);
+                               var timesRun = 0;
                                 intervalTime = setInterval(function() {
                                     timesRun += 1;
                                     // 最多更新60次
@@ -226,20 +229,23 @@
                                         cache: false,
                                         success: function (result) {
                                             if(result.total != 0 ){
-//                                                alert("5s刷新结果"+result);
-                                                $.each(dataTmp.rows,function (index,obj) {
-                                                        time1= dataTmp.timelist[index];
-
-                                                        var  str=time1.toString();
-                                                        str =  str.replace(/-/g,"/");
-                                                        //// str =  str.replace("T"," ");
-                                                        var oDate1 = new Date(str);
+                                                time1= result.timelist;
+                                                var  str=time1.toString();
+                                                str =  str.replace(/-/g,"/");
+                                                //// str =  str.replace("T"," ");
+                                                var oDate1 = new Date(str);
 //                                                       alert("下标:"+i+"时间:"+time1+"字符串:"+str+oDate1.getTime());
-                                                         time=oDate1.getTime();
-                                                    alert(time1+"he"+time);
-                                                        series.addPoint([Number(time),Number(obj)], true, true);
-//                                                    alert("新数据已添加,循环下标:"+index+"时间:"+time1+"字符串:"+str+"和"+time);
-                                                });
+                                                time=oDate1.getTime();
+                                                var obj=result.rows;
+                                                var newPoint;
+                                                newPoint = {
+                                                    x: Number(time), // current time
+                                                    y: Number(obj)
+                                                 };
+
+                                                series.addPoint(newPoint,true,true,true);
+                                                all2 = series.options.data;
+                                                alert("all2:(这是加入数据后的series.options.data)"+all2);
                                             }else{
 //                                                alert("近期5s没有数据");
                                             }
@@ -248,13 +254,7 @@
                                             alert("请求超时，请重试！");
                                         }
                                     });
-//                                    var x = (new Date()).getTime(),// current time
-//                                    y = Math.random();
-//                                    series.addPoint([x, y], true, true);
-
                                 }, 5000);// 5s更新一次
-//                                var series = this.series[0]; setInterval(function() { var x = (new Date()).getTime(), // current time
-//                                        y = Math.random(); series.addPoint([x, y], true, true); }, 1000);
                             }
                         }
                     },
@@ -295,17 +295,20 @@
                     [{ name: '线表温度 data',
                        data: (function() { // generate an array of random data
                             var data = [], time;
-                            $.each(dataTmp.rows,function (i,obj) {
-                                time1= dataTmp.timelist[i];
+                           for (i = -9; i <= 0; i++) {
 
-                                var  str=time1.toString();
-                                str =  str.replace(/-/g,"/");
-                                //// str =  str.replace("T"," ");
-                                var oDate1 = new Date(str);
+                               time1= dataTmp.timelist[i+9];
+
+                               var  str=time1.toString();
+                               str =  str.replace(/-/g,"/");
+                               //// str =  str.replace("T"," ");
+                               var oDate1 = new Date(str);
 //                                alert("下标:"+i+"时间:"+time1+"字符串:"+str+oDate1.getTime());
-                                time=oDate1.getTime();
-                                { data.push({ x: time, y: obj }); }
-                            });
+                               time=oDate1.getTime();
+                               data.push({ x: time, y: dataTmp.rows[i+9] });
+                           }
+
+
                             return data;
                        })()
                     }]
@@ -313,10 +316,6 @@
             });
         });
     }
-
-
-
-
 </script>
 
 

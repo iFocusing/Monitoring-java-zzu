@@ -292,9 +292,9 @@ public class SearchDataServlet extends HttpServlet {
                 displayList = dataService.searchChartPreviousData(pid);
                 JSONObject jsonobject = new JSONObject();
                 jsonobject.put("total", displayList.size());
-                jsonobject.put("rows", hChartUtil.getCurrentData(displayList));
+                jsonobject.put("rows", hChartUtil.getCurrentPreviousData(displayList));
 //                    System.out.println("rows::"+hChartUtil.getHistoryData(listList));
-                jsonobject.put("timelist", hChartUtil.getCurrentTimeList(displayList));
+                jsonobject.put("timelist", hChartUtil.getCurrentPreviousTimeList(displayList));
                 PrintWriter out = response.getWriter();
                 System.out.print("jsonobject:"+jsonobject);
                 out.write(jsonobject.toString());
@@ -307,14 +307,20 @@ public class SearchDataServlet extends HttpServlet {
             System.out.println("实时更新(5s)数据展示");
             Long pid=Long.valueOf(request.getParameter("pid"));
             HChartUtil hChartUtil = new HChartUtil();
-            List<DataDisplay> displayList = null;
+            DataDisplay dataDisplay = null;
             //查询条件:pid不为空
             try {
-                displayList =dataService.searchCurrentDataByPid(pid);
+                dataDisplay =dataService.searchCurrentDataByPid(pid);
                 JSONObject jsonobject = new JSONObject();
-                jsonobject.put("total", displayList.size());
-                jsonobject.put("rows", hChartUtil.getCurrentData(displayList));
-                jsonobject.put("timelist", hChartUtil.getCurrentTimeList(displayList));
+                System.out.println(dataDisplay);
+                if (dataDisplay!=null){
+                    System.out.println("有数据???");
+                    jsonobject.put("total", 1);
+                    jsonobject.put("rows", hChartUtil.getCurrentData(dataDisplay));
+                    jsonobject.put("timelist", hChartUtil.getCurrentTimeList(dataDisplay));
+                }else{
+                    jsonobject.put("total", 0);
+                }
                 PrintWriter out = response.getWriter();
                 System.out.print("jsonobject:"+jsonobject);
                 out.write(jsonobject.toString());
