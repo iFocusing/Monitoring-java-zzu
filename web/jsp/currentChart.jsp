@@ -208,11 +208,12 @@
                         marginRight: 10,
                         events: {
                             load: function() {
-                                var all1 = this.series[0].options.data;
+                                var all1 = this.series[0];
                                 var series = this.series[0];
                                 alert("all1:(这个是之前的数据)"+all1);
                                 alert("series:(这个是之前的series)"+series);
-                               var timesRun = 0;
+                                var timesRun = 0;
+
                                 intervalTime = setInterval(function() {
                                     timesRun += 1;
                                     // 最多更新60次
@@ -220,40 +221,8 @@
                                         alertMsg.warn("最多更新60次！");
                                         clearInterval(intervalTime);
                                     }
+                                    getMoreDate(pid,all1);
 
-                                    $.ajax({
-                                        type: "post",
-                                        url: "${basePath}servlet/SearchChartCurrentDataServlet",
-                                        data: {pid:pid},
-                                        dataType: "json",
-                                        cache: false,
-                                        success: function (result) {
-                                            if(result.total != 0 ){
-                                                time1= result.timelist;
-                                                var  str=time1.toString();
-                                                str =  str.replace(/-/g,"/");
-                                                //// str =  str.replace("T"," ");
-                                                var oDate1 = new Date(str);
-//                                                       alert("下标:"+i+"时间:"+time1+"字符串:"+str+oDate1.getTime());
-                                                time=oDate1.getTime();
-                                                var obj=result.rows;
-                                                var newPoint;
-                                                newPoint = {
-                                                    x: Number(time), // current time
-                                                    y: Number(obj)
-                                                 };
-
-                                                series.addPoint(newPoint,true,true,true);
-                                                all2 = series.options.data;
-                                                alert("all2:(这是加入数据后的series.options.data)"+all2);
-                                            }else{
-//                                                alert("近期5s没有数据");
-                                            }
-                                        },
-                                        error: function () {
-                                            alert("请求超时，请重试！");
-                                        }
-                                    });
                                 }, 5000);// 5s更新一次
                             }
                         }
@@ -314,6 +283,39 @@
                     }]
                 });
             });
+        });
+    }
+    function getMoreDate(pid,series) {
+        $.ajax({
+            type: "post",
+            url: "${basePath}servlet/SearchChartCurrentDataServlet",
+            data: {pid:pid},
+            dataType: "json",
+            cache: false,
+            success: function (result) {
+                if(result.total != 0 ){
+                    time1= result.timelist;
+                    var  str=time1.toString();
+                    str =  str.replace(/-/g,"/");
+                    //// str =  str.replace("T"," ");
+                    var oDate1 = new Date(str);
+//                                                       alert("下标:"+i+"时间:"+time1+"字符串:"+str+oDate1.getTime());
+                    time=oDate1.getTime();
+                    var obj=result.rows;
+                    var newPoint;
+                    newPoint = {
+                        x: Number(time), // current time
+                        y: Number(obj)
+                    };
+
+                    series.addPoint(newPoint,true,true,true);
+                }else{
+//                                                alert("近期5s没有数据");
+                }
+            },
+            error: function () {
+                alert("请求超时，请重试！");
+            }
         });
     }
 </script>
