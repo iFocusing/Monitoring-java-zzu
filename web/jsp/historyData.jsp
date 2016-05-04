@@ -187,17 +187,14 @@
             })
         },"json");
     }
-
-
-
 </script>
 
 <%--数据转图形时数据项选择的js--%>
 <script type="text/javascript">
     $(function(){
         $('#cc').combo({
-            required:true,
-            editable:false
+            required:false,
+            editable:true
         });
         $('#sp').appendTo($('#cc').combo('panel'));
         $('#sp input').click(function(){
@@ -269,6 +266,11 @@
 <%--转折线图创建标签页的js--%>
 <script>
     function loadpage(text, url) {
+        var option=$("#cc").combobox('getText');
+        alert(option);
+        if($('#line').combobox('getValue')==null || $('#line').combobox('getValue')==""){
+            alert("请选择一条线路或者一根线杆!");
+        }else if(option =="" ||option ==null ||option =="线表温度" ||option =="弧度" ||option =="室外温度" ||option =="电流" ||option =="电压" ||option =="湿度"){
         var url="../jsp/chart.jsp";
         text="折线图显示数据";
         alert(url+text);
@@ -282,6 +284,9 @@
                 closable: true
                 //href: url
             });
+        }
+        }else{
+            alert("请在数据项选框里选择正确的选项!");
         }
     }
 </script>
@@ -308,11 +313,11 @@
 
 <div id="tb" style="padding:5px;height:auto">
     <div style="margin-bottom:5px">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
+       <%-- <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"></a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true"></a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"></a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>--%>
         <span>数据项:</span>
         <select id="cc" style="width:150px"></select>
         <div id="sp">

@@ -43,16 +43,21 @@
         });
     });
 </script>
-<div id="r-result">
-    <input type="button" onclick="add_control1();" value="添加地图类型控件" />
-    <input type="button" onclick="delete_control1();" value="删除地图类型控件" />
-</div>
+
+    <div class="optionpanel" id="r-result">
+        <input type="button" onclick="add_control1();" value="添加地图类型控件" />
+        <input type="button" onclick="delete_control1();" value="删除地图类型控件" />
+        <label>选择主题</label>
+        <select id="stylelist" onchange="changeMapStyle(this.value)"></select>
+    </div>
+<%--
 <div id="r-result1">
     <div class="optionpanel">
         <label>选择主题</label>
         <select id="stylelist" onchange="changeMapStyle(this.value)"></select>
     </div>
 </div>
+--%>
 <div id="container"></div>
 <script>
     function changeMapStyle(style){
@@ -101,10 +106,10 @@
 
         changeMapStyle('midnight')
         sel.value = 'midnight';
-        //百度地图API功能:单击获取点击的经纬度
-//        map.addEventListener("click",function(e){
-//            alert(e.point.lng + "," + e.point.lat);
-//        });
+//        百度地图API功能:单击获取点击的经纬度
+        map.addEventListener("click",function(e){
+            alert(e.point.lng + "," + e.point.lat);
+        });
 // 百度地图API功能:画3点的可编辑弧线
 //        var zhengzhouPosition=new BMap.Point(113.584781,34.746844),
 //            luoyangPosition=new BMap.Point(112.475194,34.630968),
@@ -192,26 +197,17 @@
                                 "</tr>";
                     });
                     content=content+" </table></div> ";
-
-
-
                     var opts = {
                         width : 1000,     // 信息窗口宽度
                     };
                     var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
                     map.openInfoWindow(infoWindow,point); //开启信息窗口
                 }
-
-
             });
             map.addOverlay(pointCollection);  // 添加Overlay
             var polyline = new BMap.Polyline(pointss, {strokeColor:"blue", strokeWeight:5, strokeOpacity:0.5});   //创建折线
             map.addOverlay(polyline);   //增加折线
         });
-
-
-
-
 //      给每条线路添加标签;
         $.each(point1,function (idxfirst,objfirst) {
             var sContent ="该线路名称为:"+datalines[idxfirst].name;
@@ -227,9 +223,6 @@
         }
 
     }
-
-
-
     //        map.enableInertialDragging();
     //        map.enableContinuousZoom();
     //      添加城市列表控件;

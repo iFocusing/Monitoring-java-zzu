@@ -17,7 +17,7 @@
     $(function(){
         var tab = parent.$('#tabs').tabs('getSelected');
         var index = parent.$('#tabs').tabs('getTabIndex',tab);
-        alert(index);//这个获得的是当前的iframe索引,是2;
+//        alert(index);//这个获得的是当前的iframe索引,是2;
     });
 
     $(function () {
@@ -36,11 +36,13 @@
         var location =tab1.panel("body").find("iframe")[0].contentWindow.$("#pole").combobox('getText');
         var startTime=tab1.panel("body").find("iframe")[0].contentWindow.$('#startTime').datetimebox('getValue');
         var endTime=tab1.panel("body").find("iframe")[0].contentWindow.$('#endTime').datetimebox('getValue');
-        alert(pid+startTime+endTime);
+//        alert(pid+startTime+endTime);
+        var option=tab1.panel("body").find("iframe")[0].contentWindow.$("#cc").combobox('getText');
+        alert(option);
         $.ajax({
             type: "post",
             url: "${basePath}servlet/SearchChartDataServlet",
-            data: { oid:oid,aid: aid,lid:lid,pid:pid, startTime:startTime, endTime:endTime },
+            data: { oid:oid,aid: aid,lid:lid,pid:pid, startTime:startTime, endTime:endTime,option:option},
             dataType: "json",
             cache: false,
             success: function (data) {
@@ -59,6 +61,9 @@
                 alert("请求超时，请重试！");
             }
         });
+
+
+
     };
 
 

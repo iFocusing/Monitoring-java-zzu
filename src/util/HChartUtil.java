@@ -36,87 +36,185 @@ public class HChartUtil {
      * @param listList 每一个tag对应一个list，取平均值avg
      * @return
      */
-    public String getHistoryData(List<List<DataDisplay>> listList){
+    public String getHistoryData(List<List<DataDisplay>> listList,String option){
+        System.out.println("**传到hchartutil里面的option是什么?"+option);
         String data = "[";
-        for(List<DataDisplay> piTagList : listList){
-            if(piTagList != null && piTagList.size() > 0){
-                String wireTemperature = "线表温度(°C)";
-                data += "{ name:'" + wireTemperature + "', data:[";
-                for(DataDisplay piTag : piTagList){
-                    data += "" + piTag.getWireTemperature()+",";
+        if(option.equals("线表温度")){
+            for(List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    String wireTemperature = "线表温度(°C)";
+                    data += "{ name:'" + wireTemperature + "', data:[";
+                    for (DataDisplay piTag : piTagList) {
+                        data += "" + piTag.getWireTemperature() + ",";
+                    }
+                    // 去掉最后的','
+                    if (data.endsWith(",")) {
+                        data = data.substring(0, data.length() - 1);
+                    }
+                    data += "]},";
                 }
-                // 去掉最后的','
-                if(data.endsWith(",")){
-                    data = data.substring(0, data.length()-1);
-                }
-                data += "]},";
-
-
-                String outTemperature = "室外温度(°C)";
-                System.out.println("HChartsUtil"+outTemperature);
-                data += "{ name:'" + outTemperature + "', data:[";
-                for(DataDisplay piTag : piTagList){
-                    data += "" + piTag.getWireTemperature()+",";
-                }
-                // 去掉最后的','
-                if(data.endsWith(",")){
-                    data = data.substring(0, data.length()-1);
-                }
-                data += "]},";
-
-                String sag = "弧垂(m)";
-                data += "{ name:'" + sag + "', data:[";
-                for(DataDisplay piTag : piTagList){
-                    data += "" + piTag.getSag()+",";
-                }
-                // 去掉最后的','
-                if(data.endsWith(",")){
-                    data = data.substring(0, data.length()-1);
-                }
-                data += "]},";
-
-                String electricity = "电流(A)";
-                data += "{ name:'" + electricity + "', data:[";
-                for(DataDisplay piTag : piTagList){
-                    data += "" + piTag.getElectricity()+",";
-                }
-                // 去掉最后的','
-                if(data.endsWith(",")){
-                    data = data.substring(0, data.length()-1);
-                }
-                data += "]},";
-
-                String voltage = "电压(V)";
-                data += "{ name:'" + voltage + "', data:[";
-                for(DataDisplay piTag : piTagList){
-                    data += "" + piTag.getVoltage()+",";
-                }
-                // 去掉最后的','
-                if(data.endsWith(",")){
-                    data = data.substring(0, data.length()-1);
-                }
-                data += "]},";
-
-                String humidity = "湿度(RH%)";
-                data += "{ name:'" + humidity + "', data:[";
-                for(DataDisplay piTag : piTagList){
-                    data += "" + piTag.getHumidity()+",";
-                }
-                // 去掉最后的','
-                if(data.endsWith(",")){
-                    data = data.substring(0, data.length()-1);
-                }
-                data += "]},";
-
             }
 
+        }else if(option.equals("弧度")){
+            for(List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    String sag = "弧垂(m)";
+                    data += "{ name:'" + sag + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getSag()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+                }
+            }
+        }else if(option.equals("室外温度")){
+            for(List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    String outTemperature = "室外温度(°C)";
+                    System.out.println("HChartsUtil"+outTemperature);
+                    data += "{ name:'" + outTemperature + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getWireTemperature()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+                }
+            }
+        }else if(option.equals("电流")){
+            for(List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    String electricity = "电流(A)";
+                    data += "{ name:'" + electricity + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getElectricity()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+                }
+            }
+        }else if(option.equals("电压")){
+            for(List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    String voltage = "电压(V)";
+                    data += "{ name:'" + voltage + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getVoltage()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+                }
+            }
+        }else if(option.equals("湿度")){
+            for(List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    String humidity = "湿度(RH%)";
+                    data += "{ name:'" + humidity + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getHumidity()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+                }
+            }
+        }else if(option.equals("") ||option==null ||option ==""){
+            for(List<DataDisplay> piTagList : listList){
+                if(piTagList != null && piTagList.size() > 0){
+                    String wireTemperature = "线表温度(°C)";
+                    data += "{ name:'" + wireTemperature + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getWireTemperature()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+
+
+                    String outTemperature = "室外温度(°C)";
+                    System.out.println("HChartsUtil"+outTemperature);
+                    data += "{ name:'" + outTemperature + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getWireTemperature()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+
+                    String sag = "弧垂(m)";
+                    data += "{ name:'" + sag + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getSag()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+
+                    String electricity = "电流(A)";
+                    data += "{ name:'" + electricity + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getElectricity()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+
+                    String voltage = "电压(V)";
+                    data += "{ name:'" + voltage + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getVoltage()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+
+                    String humidity = "湿度(RH%)";
+                    data += "{ name:'" + humidity + "', data:[";
+                    for(DataDisplay piTag : piTagList){
+                        data += "" + piTag.getHumidity()+",";
+                    }
+                    // 去掉最后的','
+                    if(data.endsWith(",")){
+                        data = data.substring(0, data.length()-1);
+                    }
+                    data += "]},";
+
+                }
+
+            }
         }
+
         // 去掉最后的','
         if(data.length() > 0){
             data = data.substring(0, data.length()-1);
         }
         data=data+"]";
         System.out.println(data);
+
+
         return data;
     }
 
@@ -136,97 +234,113 @@ public class HChartUtil {
     }
 
 
-    public String getHistoryDataByPids(List<List<DataDisplay>> listList) {
+    public String getHistoryDataByPids(List<List<DataDisplay>> listList ,String option) {
         String data = "[";
-        String wireTemperature = "线表温度(°C)";
-        data += "{ name:'" + wireTemperature + "', data:[";
-        for(List<DataDisplay> piTagList : listList){
-            if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(0).getWireTemperature()+",";
+        System.out.println("**传到hchartutil里面的option是什么?"+option);
+        if(option=="线表温度"){
+
+        }else if(option=="弧度"){
+
+        }else if(option=="室外温度"){
+
+        }else if(option=="电流"){
+
+        }else if(option=="电压"){
+
+        }else if(option=="湿度"){
+
+        }else if(option=="" ||option==null) {
+
+
+            String wireTemperature = "线表温度(°C)";
+            data += "{ name:'" + wireTemperature + "', data:[";
+            for (List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    data += "" + piTagList.get(0).getWireTemperature() + ",";
+                }
+
             }
-
-        }
-        // 去掉最后的','
-        if(data.length() > 0){
-            data = data.substring(0, data.length()-1);
-        }
-        data=data+"]},";
-
-
-        String outTemperature = "室外温度(°C)";
-        data += "{ name:'" + outTemperature + "', data:[";
-        for(List<DataDisplay> piTagList : listList){
-            if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(0).getOutTemperature()+",";
+            // 去掉最后的','
+            if (data.length() > 0) {
+                data = data.substring(0, data.length() - 1);
             }
-
-        }
-        // 去掉最后的','
-        if(data.length() > 0){
-            data = data.substring(0, data.length()-1);
-        }
-        data=data+"]},";
+            data = data + "]},";
 
 
-        String sag = "弧垂(m)";
-        data += "{ name:'" + sag + "', data:[";
-        for(List<DataDisplay> piTagList : listList){
-            if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(0).getSag()+",";
+            String outTemperature = "室外温度(°C)";
+            data += "{ name:'" + outTemperature + "', data:[";
+            for (List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    data += "" + piTagList.get(0).getOutTemperature() + ",";
+                }
+
             }
-
-        }
-        // 去掉最后的','
-        if(data.length() > 0){
-            data = data.substring(0, data.length()-1);
-        }
-        data=data+"]},";
-
-
-        String electricity = "电流(A)";
-        data += "{ name:'" + electricity + "', data:[";
-        for(List<DataDisplay> piTagList : listList){
-            if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(0).getElectricity()+",";
+            // 去掉最后的','
+            if (data.length() > 0) {
+                data = data.substring(0, data.length() - 1);
             }
+            data = data + "]},";
 
-        }
-        // 去掉最后的','
-        if(data.length() > 0){
-            data = data.substring(0, data.length()-1);
-        }
-        data=data+"]},";
 
-        String voltage = "电压(V)";
-        data += "{ name:'" + voltage + "', data:[";
-        for(List<DataDisplay> piTagList : listList){
-            if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(0).getVoltage()+",";
+            String sag = "弧垂(m)";
+            data += "{ name:'" + sag + "', data:[";
+            for (List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    data += "" + piTagList.get(0).getSag() + ",";
+                }
+
             }
-
-        }
-        // 去掉最后的','
-        if(data.length() > 0){
-            data = data.substring(0, data.length()-1);
-        }
-        data=data+"]},";
-
-        String humidity = "湿度(RH%)";
-        data += "{ name:'" + humidity + "', data:[";
-        for(List<DataDisplay> piTagList : listList){
-            if(piTagList != null && piTagList.size() > 0){
-                data += "" +piTagList.get(0).getHumidity()+",";
+            // 去掉最后的','
+            if (data.length() > 0) {
+                data = data.substring(0, data.length() - 1);
             }
+            data = data + "]},";
+
+
+            String electricity = "电流(A)";
+            data += "{ name:'" + electricity + "', data:[";
+            for (List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    data += "" + piTagList.get(0).getElectricity() + ",";
+                }
+
+            }
+            // 去掉最后的','
+            if (data.length() > 0) {
+                data = data.substring(0, data.length() - 1);
+            }
+            data = data + "]},";
+
+            String voltage = "电压(V)";
+            data += "{ name:'" + voltage + "', data:[";
+            for (List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    data += "" + piTagList.get(0).getVoltage() + ",";
+                }
+
+            }
+            // 去掉最后的','
+            if (data.length() > 0) {
+                data = data.substring(0, data.length() - 1);
+            }
+            data = data + "]},";
+
+            String humidity = "湿度(RH%)";
+            data += "{ name:'" + humidity + "', data:[";
+            for (List<DataDisplay> piTagList : listList) {
+                if (piTagList != null && piTagList.size() > 0) {
+                    data += "" + piTagList.get(0).getHumidity() + ",";
+                }
+
+            }
+            // 去掉最后的','
+            if (data.length() > 0) {
+                data = data.substring(0, data.length() - 1);
+            }
+            data = data + "]},";
+
 
         }
-        // 去掉最后的','
-        if(data.length() > 0){
-            data = data.substring(0, data.length()-1);
-        }
-        data=data+"]},";
-
-
-
 
 
 

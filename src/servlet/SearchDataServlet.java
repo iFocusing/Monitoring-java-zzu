@@ -182,7 +182,9 @@ public class SearchDataServlet extends HttpServlet {
                 btime=true;
             }
             //System.out.println("组织"+boid+"地区"+baid+"线路"+blid+"线杆"+bpid);
-            System.out.println("到查询数据图形展示");
+            String option=request.getParameter("option");
+
+            System.out.println("到查询数据图形展示"+option);
             String[] pids = new String[10];
             HChartUtil hChartUtil = new HChartUtil();
             List<List<DataDisplay>> listList = null;
@@ -196,7 +198,7 @@ public class SearchDataServlet extends HttpServlet {
                     listList = dataService.searchChartData(pids, startTime, endTime);
                     JSONObject jsonobject = new JSONObject();
                     jsonobject.put("total", pids.length);
-                    jsonobject.put("rows", hChartUtil.getHistoryData(listList));
+                    jsonobject.put("rows", hChartUtil.getHistoryData(listList,option));
 //                    System.out.println("rows::"+hChartUtil.getHistoryData(listList));
                     jsonobject.put("timelist", hChartUtil.getHistoryTimeList(listList));
                     PrintWriter out = response.getWriter();
@@ -221,8 +223,8 @@ public class SearchDataServlet extends HttpServlet {
                     listList = dataService.searchChartData1(oid,aid,lid, startTime, endTime);
                     JSONObject jsonobject = new JSONObject();
                     jsonobject.put("total", pids.length);
-                    jsonobject.put("rows", hChartUtil.getHistoryDataByPids(listList));
-                    System.out.println("pids---rows::"+hChartUtil.getHistoryDataByPids(listList));
+                    jsonobject.put("rows", hChartUtil.getHistoryDataByPids(listList,option));
+//                    System.out.println("pids---rows::"+hChartUtil.getHistoryDataByPids(listList));
                     jsonobject.put("timelist", hChartUtil.getPidList(listList));
                     PrintWriter out = response.getWriter();
                     System.out.print("jsonobject:"+jsonobject);
