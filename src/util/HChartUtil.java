@@ -239,17 +239,17 @@ public class HChartUtil {
         System.out.println("**传到hchartutil里面的option是什么?"+option);
         if(option=="线表温度"){
 
-        }else if(option=="弧度"){
+        }else if(option.equals("弧度")){
 
-        }else if(option=="室外温度"){
+        }else if(option.equals("室外温度")){
 
-        }else if(option=="电流"){
+        }else if(option.equals("电流")){
 
-        }else if(option=="电压"){
+        }else if(option.equals("电压")){
 
-        }else if(option=="湿度"){
+        }else if(option.equals("湿度")){
 
-        }else if(option=="" ||option==null) {
+        }else if(option.equals("") ||option==null) {
 
 
             String wireTemperature = "线表温度(°C)";

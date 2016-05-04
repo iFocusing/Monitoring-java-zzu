@@ -299,6 +299,27 @@
         $("#endTime").datebox("setValue",'6/1/2016 00:00:00');
     });
 </script>
+
+<script>
+    function exportExcel(){
+        var oid=$('#organization').combobox('getValue');
+        var aid=$('#region').combobox('getValue');
+        var lid=$('#line').combobox('getValue');
+        var pid=$('#pole').combobox('getValue');
+        var startTime=$('#startTime').datetimebox('getValue');
+        var endTime=$('#endTime').datetimebox('getValue');
+        var url = "${basePath}servlet/ExportDataToExcel";
+           url += "?oid="+oid
+           +"&aid="+aid
+           +"&lid="+lid
+           +"&pid="+pid
+           +"&startTime="+startTime
+           +"&endTime="+endTime;
+        window.open(url);
+    }
+</script>
+
+
 <body onload="showvalf()">
 <div id="searchtool" style="padding:5px">
     <span>组织:</span> <input class="easyui-combobox" style="width:80px" name="organization" id="organization">
@@ -330,6 +351,7 @@
             <input type="radio" name="lang" value="06"><span>湿度</span>
         </div>
         <input type="button" value="折线图显示数据" class="cs-navi-tab" onclick="loadpage()">
+        <input type="button" value="导出Excel表格" class="cs-navi-tab" onclick="exportExcel()">
     </div>
     <div>
     </div>
