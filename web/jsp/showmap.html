@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        #container{
+            font-size:12px;
+            margin:5px 0;
+        }
+    </style>
+    <title>
+        城市列表显示示例</title>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+    <!--<script type="text/javascript" src="http://api.map.baidu.com/library/CityList/1.4/src/CityList_min.js"></script>-->
+    <script type="text/javascript" src="../js/CityList.js"></script>
+
+</head>
+<body>
+<div id="container"></div>
+<div style="width:520px;height:340px;border:1px solid gray" id="map_container"></div>
+</body>
+</html>
+<script type="text/javascript">
+    // 新创建地图
+    var map = new BMap.Map("map_container");
+    map.centerAndZoom(new BMap.Point(121.478125,31.229649), 12);
+
+    var cityList = new BMapLib.CityList({
+        container: 'container',
+        map: map
+    });
+
+    cityList.getBusiness('中关村', function(json){
+        console.log('商圈');
+        console.log(json);
+    });
+
+    cityList.getSubAreaList(131, function(json){
+        console.log('城市列表');
+        console.log(json);
+    });
+
+    cityList.addEventListener('cityclick', function(e){
+        console.log(e);
+    });
+
+</script>
+
+
