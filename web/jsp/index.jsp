@@ -322,7 +322,7 @@
             <a href="javascript:void(0);" src="../jsp/map.jsp" class="cs-navi-tab">百度地图数据展示</a></p>
             <a href="javascript:void(0);" src="../jsp/currentChart.jsp" class="cs-navi-tab">查看实时数据</a></p>
             <a href="javascript:void(0);" src="#" class="cs-navi-tab">数据报表</a></p>
-            <a href="javascript:void(0);" src="../jsp/map.html" class="cs-navi-tab">map</a></p>
+            <a href="javascript:void(0);" src="../jsp/test.jsp" class="cs-navi-tab">map</a></p>
 
 
         </div>

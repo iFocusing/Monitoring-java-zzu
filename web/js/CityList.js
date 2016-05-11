@@ -649,10 +649,10 @@ var BMapLib = window.BMapLib = BMapLib || {};
                 var po = mp.pointToLngLat(new BMap.Pixel(geo.x, geo.y))
                 if(data.content.area_code == 1){
                     var point = new BMap.Point(116.403119,39.92069);
-                    map.centerAndZoom(point, 12);
+                    map1.centerAndZoom(point, 12);
                 }else{
                     var point = new BMap.Point(po.lng, po.lat);
-                    map.centerAndZoom(point, selectArea.level);
+                    map1.centerAndZoom(point, selectArea.level);
                 }
                 /*渲染城市*/
                 if(data.content.sub){
@@ -786,7 +786,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         }
 
         var polygon = new BMap.Polygon();
-        map.addOverlay(polygon);
+        map1.addOverlay(polygon);
         polygon.hide();
         baidu.on(businessDom, "change", function(e){
             var s_value = businessDom.value;
@@ -803,7 +803,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
             }
             polygon.show();
             polygon.setPath(business_geo);
-            map.setViewport(business_geo);
+            map1.setViewport(business_geo);
 
             dispatchCityClick(this.options[this.selectedIndex]);
 
