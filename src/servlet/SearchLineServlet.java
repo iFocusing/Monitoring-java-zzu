@@ -45,7 +45,6 @@ public class SearchLineServlet extends HttpServlet{
 
         if("/servlet/SearchMapLineServlet".equals(path)) {
             Long oid= Long.valueOf(request.getParameter("oid"));
-            PoleService poleService=new PoleService();
             LineService lineService=new LineService();
             DataService dataService=new DataService();
             try {

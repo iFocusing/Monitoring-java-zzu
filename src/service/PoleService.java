@@ -19,7 +19,7 @@ public class PoleService {
     private LineDao lineDao = new LineDao();
 
     public List<Pole> searchPoleByLine(Long oid, Long aid, Long lid) throws Exception {
-        return poleDao.searchPoleByLine(adminRegionDao.searchRegion(aid), organizationDao.findOne(oid), lineDao.searchLine(lid));
+        return poleDao.searchPoleByLine(adminRegionDao.searchRegion(aid), organizationDao.searchOrganization(oid), lineDao.searchLine(lid));
     }
 }
 

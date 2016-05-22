@@ -13,6 +13,6 @@ public class OrganizationService {
 
     public List<Organization> searchOrganizationSub(long oid) throws Exception {
         System.out.println("2--");
-        return organizationDao.searchOrganizationSub(organizationDao.findOne(oid));
+        return organizationDao.searchOrganizationSub(organizationDao.searchOrganization(oid));
     }
 }

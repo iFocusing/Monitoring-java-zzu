@@ -13,8 +13,8 @@ public class AdminRegionService {
     private AdminRegionDao adminRegionDao = new AdminRegionDao();
     private OrganizationDao organizationDao = new OrganizationDao();
 
-    public List<AdminRegion> search(Long oid) throws Exception {   // System.out.println(adminRegionDao.searchRegion(organizationDao.findOne(oid)));
-        System.out.println(organizationDao.findOne(oid));
-        return adminRegionDao.searchRegion(organizationDao.findOne(oid));
+    public List<AdminRegion> searchAdminRegionByOid(Long oid) throws Exception {   // System.out.println(adminRegionDao.searchRegion(organizationDao.findOne(oid)));
+        System.out.println(organizationDao.searchOrganization(oid));
+        return adminRegionDao.searchRegion(organizationDao.searchOrganization(oid));
     }
 }

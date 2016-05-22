@@ -22,12 +22,12 @@ public class OrganizationDao {
         conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/monitoring","root","root");
     }
 
-    public Organization findOne(Long organizationId) throws Exception {
+    public Organization searchOrganization(Long oid) throws Exception {
         this.initConnection();
         Organization organization = new Organization();
         String sql = "select * from organization where o_id=?";
         PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setLong(1, organizationId);
+        ps.setLong(1, oid);
         ResultSet rs = ps.executeQuery();
         while(rs.next()){
             organization.setOid(rs.getLong("o_id"));

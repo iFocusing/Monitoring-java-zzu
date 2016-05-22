@@ -25,8 +25,8 @@ public class SearchAdminRegionServlet extends HttpServlet {
 //            request.setAttribute("oid", oid);
 //            request.setAttribute("adminRegionList", adminRegionService.search(oid));
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("rows", adminRegionService.search(oid));
-            jsonObject.put("total",adminRegionService.search(oid).size());
+            jsonObject.put("rows", adminRegionService.searchAdminRegionByOid(oid));
+            jsonObject.put("total",adminRegionService.searchAdminRegionByOid(oid).size());
 //            System.out.println(jsonObject);
             PrintWriter out = response.getWriter();
             out.write(jsonObject.toString());

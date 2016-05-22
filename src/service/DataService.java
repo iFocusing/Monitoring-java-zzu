@@ -25,27 +25,27 @@ public class DataService {
     //查询条件:pid为空,组织\地区\线路\时间都不为空
     public List<DataDisplay> searchData(Long oid, Long aid, Long lid, Timestamp startTime, Timestamp endTime) throws Exception{
         System.out.println("查询条件:pid为空,组织\\地区\\线路\\时间都不为空");
-        return dataDao.searchData(organizationDao.findOne(oid),adminRegionDao.searchRegion(aid),lid,startTime,endTime);
+        return dataDao.searchData(organizationDao.searchOrganization(oid),adminRegionDao.searchRegion(aid),lid,startTime,endTime);
     }
     //查询条件:pid\线路为空,组织\地区\时间不为空
     public List<DataDisplay> searchData(Long oid, Long aid, Timestamp startTime, Timestamp endTime)throws Exception {
         System.out.println("查询条件:pid\\线路为空,组织\\地区\\时间不为空");
-        return dataDao.searchData(organizationDao.findOne(oid),adminRegionDao.searchRegion(aid),startTime,endTime);
+        return dataDao.searchData(organizationDao.searchOrganization(oid),adminRegionDao.searchRegion(aid),startTime,endTime);
     }
     //查询条件:pid\线路\地区为空,组织\时间不为空
     public List<DataDisplay> searchDataByOid(Long oid, Timestamp startTime, Timestamp endTime) throws Exception {
         System.out.println("查询条件:pid\\线路\\地区为空,组织\\时间不为空");
-        return dataDao.searchDataByOid(organizationDao.findOne(oid),startTime,endTime);
+        return dataDao.searchDataByOid(organizationDao.searchOrganization(oid),startTime,endTime);
     }
     /*查询条件:pid\线路\地区\组织\时间都为空--
     * 查询过去一天内的所有历史数据*/
     public List<DataDisplay> searchAllData(Long oid) throws Exception {
         System.out.println("查询条件:pid\\线路\\地区\\组织\\时间都为空--查询该组织的所有数据");
-        return dataDao.searchAllData(organizationDao.findOne(oid));
+        return dataDao.searchAllData(organizationDao.searchOrganization(oid));
     }
 
     /*
-     * 查询数据用于直线图展示;
+     * 查询数据用于折线图展示;
      * 借鉴黄诗鹤代码;
     * */
     public List<List<DataDisplay>> searchChartData(String[] pids, String startDate, String endDate) throws Exception {
@@ -72,7 +72,7 @@ public class DataService {
         System.out.println("多个线杆折线图展示中获取的参数:"+startTime+endTime+lid);
         //用lid查线杆;
         List<Long> pids=new ArrayList<Long>();
-        List<Pole> poleList=poleDao.searchPoleByLine(adminRegionDao.searchRegion(aid),organizationDao.findOne(oid),lineDao.searchLine(lid));
+        List<Pole> poleList=poleDao.searchPoleByLine(adminRegionDao.searchRegion(aid),organizationDao.searchOrganization(oid),lineDao.searchLine(lid));
         for(int i=0;i<poleList.size();i++){
             pids.add(poleList.get(i).getPid());
         }
@@ -85,10 +85,10 @@ public class DataService {
         return DataListList;
     }
 
-    public List<DataDisplay> searchChartData(Long pid) throws Exception {
-        List<DataDisplay> dataList =dataDao.searchData(pid);
-        return dataList;
-    }
+//    public List<DataDisplay> searchChartData(Long pid) throws Exception {
+//        List<DataDisplay> dataList =dataDao.searchData(pid);
+//        return dataList;
+//    }
 
     public List<DataDisplay> searchChartPreviousData(Long pid) throws Exception {
         List<DataDisplay> dataList =dataDao.searchPreviousData(pid);
@@ -98,7 +98,7 @@ public class DataService {
 
 
     public List<List<Pole>> searchPoleMapByOid(Long oid) throws Exception {
-        List<Line> lineList=lineDao.searchLine(organizationDao.findOne(oid)) ;
+        List<Line> lineList=lineDao.searchLine(organizationDao.searchOrganization(oid)) ;
         List<List<Pole>> poleListList = new ArrayList<>();
         List<Long> lids=new ArrayList<Long>();
         for(int i=0;i<lineList.size();i++){
@@ -106,7 +106,7 @@ public class DataService {
         }
         for (Long lid : lids) {
             System.out.println(lid);
-            List<Pole> poleList =poleDao.searchPoleMapByLidOid(lid,organizationDao.findOne(oid));
+            List<Pole> poleList =poleDao.searchPoleMapByLidOrganization(lid,organizationDao.searchOrganization(oid));
             poleListList.add(poleList);
         }
         return poleListList;

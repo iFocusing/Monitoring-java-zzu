@@ -100,11 +100,11 @@
                     if(str.charAt(i)==','){
                         break;
                     }else {
-                        lng0=lng+str.charAt(i);
+                        lng0=lng0+str.charAt(i);
                     }
                 }
                 for(i=i+1;i<str.length;i++){
-                    lat0=lat+str.charAt(i);
+                    lat0=lat0+str.charAt(i);
                 }
 
 
@@ -114,45 +114,45 @@
                     url: "${basePath}servlet/BaiDuMapProvinceServlet",
                     dataType: "json",
                     success: function (data) {
+                        alert("chenggongcharuyigesheng");
+                        for (var k = 0, m = pv.cities.length; k < m; k++) {
+                            console.info(pv.cities[k].n);
+                            //插入每个普通省的市
+                            var str=pv.cities[k].g;
+                            var lat="";
+                            var lng="";
+                            var i=0;
+                            str=str.substring(0,str.length-3);
+                            console.info("字符串:"+str);
+                            for(i=0;i<str.length;i++){
+                                if(str.charAt(i)==','){
+                                    break;
+                                }else {
+                                    lng=lng+str.charAt(i);
+                                }
+                            }
+                            for(i=i+1;i<str.length;i++){
+                                lat=lat+str.charAt(i);
+                            }
+                            $.ajax({
+                                type: "post",
+                                data:{lat:lat,lng:lng,lat0:lat0,lng0:lng0},
+                                url: "${basePath}servlet/BaiDuMapCityServlet",
+                                dataType: "json",
+                                success: function (data) {
+                                },
+                                error: function () {
+                                    alert("33333:每个普通省的市:请求超时，请重试！");
+                                }
+                            });
+                        }
                     },
                     error: function () {
                         alert("22222:普通省:请求超时，请重试！");
                     }
                 });
-                for (var k = 0, m = pv.cities.length; k < m; k++) {
-                    console.info(pv.cities[k].n);
-                    //插入每个普通省的市
-                    var str=pv.cities[k].g;
-                    var lat="";
-                    var lng="";
-                    var i=0;
-                    str=str.substring(0,str.length-3);
-                    console.info("字符串:"+str);
-                    for(i=0;i<str.length;i++){
-                        if(str.charAt(i)==','){
-                            break;
-                        }else {
-                            lng=lng+str.charAt(i);
-                        }
-                    }
-                    for(i=i+1;i<str.length;i++){
-                        lat=lat+str.charAt(i);
-                    }
-                    $.ajax({
-                        type: "post",
-                        data:{lat:lat,lng:lng,lat0:lat0,lng0:lng0},
-                        url: "${basePath}servlet/BaiDuMapCityServlet",
-                        dataType: "json",
-                        success: function (data) {
-                        },
-                        error: function () {
-                            alert("33333:每个普通省的市:请求超时，请重试！");
-                        }
-                    });
 
 
-                    getBoundary(pv.cities[j].n, pv.n);
-                }
 
             }
 
@@ -233,7 +233,6 @@
     //            eventsTable.innerHTML = rs.boundaries[0].length +':'+ rs.boundaries[0];
     //        });
     //    }
-
 
 
     //    map.addEventListener("click", function(e){

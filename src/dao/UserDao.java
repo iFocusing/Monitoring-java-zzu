@@ -23,7 +23,7 @@ public class UserDao {
         conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/monitoring", "root", "root");
     }
 
-    public Long searchOid(Long uid) throws Exception {
+    public Long searchOidByUid(Long uid) throws Exception {
         this.initConnection();
         Long oid = null;
         String sql="select o_id from user where u_id=?";

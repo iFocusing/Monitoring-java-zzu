@@ -17,12 +17,12 @@ public class LineService {
 
     public List<Line> searchLineInOraganizationAdmin(Long aid,Long oid) throws Exception {
 //        System.out.println(lineDao.searchLine(adminRegionDao.searchRegion(aid) , organizationDao.findOne(oid)));
-        return lineDao.searchLine(adminRegionDao.searchRegion(aid) , organizationDao.findOne(oid));
+        return lineDao.searchLine(adminRegionDao.searchRegion(aid) , organizationDao.searchOrganization(oid));
     }
 
 
     public List<Line> searchLineInOraganization(Long oid) throws Exception {
-        return lineDao.searchLine(organizationDao.findOne(oid));
+        return lineDao.searchLine(organizationDao.searchOrganization(oid));
     }
 
 }

@@ -31,7 +31,7 @@
         }else{
             //ajax异步提交
             jQuery.ajax({
-                url: "${basePath}SearchUserServlet",
+                url: "${basePath}UserServlet",
                 type: "post",
                 data: { "TxtUserName": $("#TxtUserName").val() ,"TxtPassword":$("#TxtPassword").val()},
                 dataType: "json",

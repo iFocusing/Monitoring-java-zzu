@@ -50,7 +50,7 @@ public class PoleDao {
     }
 
 
-    public List<Pole> searchPoleByOid(Organization organization) throws Exception {
+    public List<Pole> searchPoleByOrganization(Organization organization) throws Exception {
         List<Pole> poleList=new ArrayList<Pole>();
 //        System.out.println("2: "+line.getName());
         this.initConnection();
@@ -70,7 +70,7 @@ public class PoleDao {
     }
 
 
-    public List<Pole> searchPoleMapByLidOid(Long lid, Organization organization) throws Exception {
+    public List<Pole> searchPoleMapByLidOrganization(Long lid, Organization organization) throws Exception {
         List<Pole> poleList=new ArrayList<Pole>();
         this.initConnection();
         String sql="SELECT DISTINCT pole.* FROM pole WHERE o_id IN (SELECT organization.o_id FROM organization WHERE organization.o_id=? OR organization.parent_ids like ?) and l_id=?";
