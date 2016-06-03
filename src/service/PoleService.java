@@ -4,6 +4,7 @@ import bean.Data;
 //import bean.DataMapDisplay;
 import bean.Line;
 import bean.Pole;
+import bean.User;
 import dao.*;
 
 import java.util.ArrayList;
@@ -41,6 +42,24 @@ public class PoleService {
      */
     public List<Pole> searchPoleByLine( Long lid) throws Exception {
         return poleDao.searchPoleByLine(lid);
+    }
+    /**
+     * Created by HPY
+     */
+    public void add(Pole pole )throws Exception{
+        poleDao.addPole(pole);
+    }
+    public void modify(Pole pole )throws Exception{
+        poleDao.modifyPole(pole);
+    }
+    public void deleate(Pole pole)throws Exception{
+        poleDao.deleatePole(pole);
+    }
+    public List<Pole> show(User user)throws Exception{
+        return poleDao.showPoles(user);
+    }
+    public List<Pole> search(User user,Pole pole)throws Exception{
+        return poleDao.searchPoles(user,pole);
     }
 }
 

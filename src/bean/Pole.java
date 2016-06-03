@@ -11,6 +11,33 @@ public class Pole {
     private long lid;
     private long aid;
     private long oid;
+    private String lname;
+    private String aname;
+    private String oname;
+    public String getAname() {
+        return aname;
+    }
+
+    public void setAname(String aname) {
+        this.aname = aname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public String getOname() {
+        return oname;
+    }
+
+    public void setOname(String oname) {
+        this.oname = oname;
+    }
+
 
     public Pole(){
     }

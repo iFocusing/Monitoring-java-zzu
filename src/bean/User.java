@@ -15,6 +15,80 @@ public class User {
     private Boolean status;
     private long oid;
 
+    private String birthdayString;
+    private String organizationName;
+    private Long[] roleNamesshuzhu;
+    private Long[] fIds;
+    private String roleNames;
+    //放查询时候用的roleid
+    private Long roleid;
+    private String sexString;
+    private String statusString;
+
+    public String getBirthdayString() {
+        return birthdayString;
+    }
+
+    public void setBirthdayString(String birthdayString) {
+        this.birthdayString = birthdayString;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public Long[] getRoleNamesshuzhu() {
+        return roleNamesshuzhu;
+    }
+
+    public void setRoleNamesshuzhu(Long[] roleNamesshuzhu) {
+        this.roleNamesshuzhu = roleNamesshuzhu;
+    }
+
+    public Long[] getfIds() {
+        return fIds;
+    }
+
+    public void setfIds(Long[] fIds) {
+        this.fIds = fIds;
+    }
+
+    public String getRoleNames() {
+        return roleNames;
+    }
+
+    public void setRoleNames(String roleNames) {
+        this.roleNames = roleNames;
+    }
+
+    public Long getRoleid() {
+        return roleid;
+    }
+
+    public void setRoleid(Long roleid) {
+        this.roleid = roleid;
+    }
+
+    public String getSexString() {
+        return sexString;
+    }
+
+    public void setSexString(String sexString) {
+        this.sexString = sexString;
+    }
+
+    public String getStatusString() {
+        return statusString;
+    }
+
+    public void setStatusString(String statusString) {
+        this.statusString = statusString;
+    }
+
     public User() {
     }
 

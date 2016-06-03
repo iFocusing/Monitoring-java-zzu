@@ -326,6 +326,24 @@
 
 
         </div>
+        <div title="节点管理">
+            <a href="javascript:void(0);" src="../jsp/ManageNode.jsp" class="cs-navi-tab">节点管理</a></p>
+        </div>
+        <div title="线杆管理">
+            <a href="javascript:void(0);" src="../jsp/ManagePole.jsp" class="cs-navi-tab">线杆管理</a></p>
+        </div>
+        <div title="角色管理">
+            <a href="javascript:void(0);" src="../jsp/ManageRole.jsp" class="cs-navi-tab">角色管理</a></p>
+        </div>
+        <div title="线路管理">
+            <a href="javascript:void(0);" src="../jsp/ManageLine.jsp" class="cs-navi-tab">线路管理</a></p>
+        </div>
+        <div title="组织机构管理">
+            <a href="javascript:void(0);" src="../jsp/ManageOrganization.jsp" class="cs-navi-tab">组织机构管理</a></p>
+        </div>
+        <div title="用户管理">
+            <a href="javascript:void(0);" src="../jsp/ManageUser.jsp" class="cs-navi-tab">用户管理</a></p>
+        </div>
     </div>
 </div>
 <div id="mainPanle" region="center" border="true" border="false">

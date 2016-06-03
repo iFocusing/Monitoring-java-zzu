@@ -100,6 +100,81 @@ public class LineDao {
         this.closeConnection();
         return lineList;
     }
+    /**
+     *
+     * @return
+     * @param
+     * @author HPY
+     */
+    public void AddLine(Line line)throws Exception{
+        this.initConnection();
+        String sql="INSERT INTO line (name) VALUES (?)";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1,line.getName());
+//        System.out.println(line.getName());
+        ps.executeUpdate();
+        this.closeConnection();
+    }
+    //根据线路id修改线路名称
+    public void ModifyLineName(Line oldline)throws Exception {
+        this.initConnection();
+        String sql="UPDATE line SET line.name=? WHERE l_id=? ";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1,oldline.getName());
+        ps.setLong(2,oldline.getLid());
+//        System.out.println(line.getName());
+        ps.executeUpdate();
+        this.closeConnection();
+    }
+    public Boolean FineOneByName(Line line)throws Exception{
+        this.initConnection();
+
+        String sql="SELECT line.name FROM line WHERE line.name=?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1,line.getName());
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()){
+//            System.out.println("有重名不能添加");
+            this.closeConnection();
+            return false;
+        }else {
+//            System.out.println("没有重名可以添加");
+            this.closeConnection();
+            return true;
+        }
+
+    }
+    public List<Line> SearchLine(String name)throws Exception{
+        List<Line> lineList =new ArrayList<Line>();
+        this.initConnection();
+        String sql = "select line.* from line WHERE name LIKE ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1,"%"+name+"%");
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()){
+            Line line = new Line();
+            line.setLid(rs.getLong(1));
+            line.setName(rs.getString(2));
+            lineList.add(line);
+        }
+        this.closeConnection();
+        return lineList;
+    }
+    public List<Line> ShowLine()throws Exception{
+        List<Line> lineList =new ArrayList<Line>();
+        this.initConnection();
+        String sql = "select line.* from line ";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()){
+            Line line = new Line();
+            line.setLid(rs.getLong(1));
+            line.setName(rs.getString(2));
+            lineList.add(line);
+        }
+        this.closeConnection();
+        return lineList;
+    }
 
     /**
      * 关闭数据库
