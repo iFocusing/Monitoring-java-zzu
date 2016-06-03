@@ -15,4 +15,12 @@ public class OrganizationService {
         System.out.println("2--");
         return organizationDao.searchOrganizationSub(organizationDao.searchOrganization(oid));
     }
+    /**
+     * Created by SLJ
+     */
+    public  List<Organization> QuanOrganization() throws Exception {
+        return organizationDao.organizationQuan();
+    }
+
+
 }

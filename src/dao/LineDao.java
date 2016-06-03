@@ -78,6 +78,30 @@ public class LineDao {
         return lineList;
     }
     /**
+     *
+     * @return
+     * @param
+     * @author SLJ
+     */
+
+    public List<Line> name_searchLine(String lin_name) throws Exception {
+        List<Line>  lineList=new ArrayList<Line>();
+        this.initConnection();
+
+        String sql="SELECT * FROM line WHERE line.name like ?";
+        PreparedStatement ps=conn.prepareStatement(sql);
+        ps.setString(1, lin_name+"%");
+
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            Line line=new Line(rs.getString("name"),rs.getLong("l_id"));
+            lineList.add(line);
+        }
+        this.closeConnection();
+        return lineList;
+    }
+
+    /**
      * 关闭数据库
      * @return
      * @param

@@ -90,6 +90,61 @@ public class PoleDao {
     }
 
     /**
+     * @return
+     * @param
+     * @author SLJ
+     */
+    public List<Pole> searchPoleByLine(long lid) throws Exception
+    {
+
+        List<Pole> poleList = new ArrayList<Pole>();
+        // System.out.println("2: "+line.getName());
+        this.initConnection();
+        String sql = "SELECT pole.* FROM pole WHERE l_id=?";
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setLong(1, lid);
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next())
+        {
+            Pole pole = new Pole(rs.getLong("p_id"), rs.getDouble("longitude"), rs.getDouble("latitude"),
+                    rs.getLong("location"), rs.getLong("l_id"), rs.getLong("a_id"), rs.getLong("o_id"));
+            poleList.add(pole);
+        }
+        // System.out.println("22: "+poleList);
+        this.closeConnection();
+        return poleList;
+    }
+    /**
+     * @return
+     * @param
+     * @author SLJ
+     */
+    public List<Pole> pid_pole(long pid) throws Exception
+    {
+
+        List<Pole> poleList = new ArrayList<Pole>();
+        // System.out.println("2: "+line.getName());
+        this.initConnection();
+        String sql = "SELECT pole.* FROM pole WHERE p_id=?";
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setLong(1, pid);
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next())
+        {
+            Pole pole = new Pole(rs.getLong("p_id"), rs.getDouble("longitude"), rs.getDouble("latitude"),
+                    rs.getLong("location"), rs.getLong("l_id"), rs.getLong("a_id"), rs.getLong("o_id"));
+            poleList.add(pole);
+        }
+        // System.out.println("22: "+poleList);
+        this.closeConnection();
+        return poleList;
+    }
+
+    /**
      * 关闭数据库
      * @return
      * @param

@@ -63,6 +63,39 @@ public class AdminRegionDao {
         return adminRegion;
     }
 
+
+    /**
+     * @return
+     * @param
+     * @author SLJ
+     */
+    public List<AdminRegion> name_searchAdm(String adm_name) throws Exception {
+        List<AdminRegion> adminRegionList = new ArrayList<AdminRegion>();
+        this.initConnection();
+
+//        String sql = "SELECT * FROM organization WHERE organization.name like ?";
+//        PreparedStatement ps = conn.prepareStatement(sql);
+//        ps.setString(1, org_name+"%");
+//
+        String sql = "select * FROM admin_region WHERE admin_region.name like ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, adm_name+"%");
+
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            AdminRegion adminRegion = new AdminRegion();
+            adminRegion.setAid(rs.getLong("a_id"));
+            adminRegion.setName(rs.getString("name"));
+            adminRegion.setCode(rs.getLong("code"));
+            adminRegion.setParentId(rs.getLong("parent_id"));
+            adminRegion.setParentIds(rs.getString("parent_ids"));
+            adminRegionList.add(adminRegion);
+        }
+        this.closeConnection();
+        return adminRegionList;
+    }
+
+
     /**
      * 关闭数据库
      * @return

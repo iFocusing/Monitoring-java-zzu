@@ -59,6 +59,57 @@ public class OrganizationDao {
         this.closeConnection();
         return organizationList;
     }
+
+    /**
+     *
+     * @return  返回所有organazaton
+     * @param
+     * @author SLJ
+     */
+
+    public List<Organization>organizationQuan() throws Exception
+    {
+        this.initConnection();
+        List<Organization> organizationList = new ArrayList<Organization>();
+        String sql = "SELECT * FROM organization";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()){
+            Organization orga1=new Organization(rs.getLong("o_id"),rs.getString("name"),rs.getString("address"),rs.getLong("parent_id"),rs.getString("parent_ids"));
+            organizationList.add(orga1);
+            System.out.println("4:--"+organizationList);
+        }
+        this.closeConnection();
+        return organizationList;
+
+    }
+
+
+    /**
+     *
+     * @return
+     * @param
+     * @author SLJ
+     */
+    public List<Organization> name_searchOrg(String org_name) throws Exception {
+
+        this.initConnection();
+        List<Organization> organizationList = new ArrayList<Organization>();
+        String sql = "SELECT * FROM organization WHERE organization.name like ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, org_name+"%");
+
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            Organization orga=new Organization(rs.getLong("o_id"),rs.getString("name"),rs.getString("address"),rs.getLong("parent_id"),rs.getString("parent_ids"));
+            organizationList.add(orga);
+
+        }
+        this.closeConnection();
+        return organizationList;
+    }
+
     /**
      * 关闭数据库
      * @return

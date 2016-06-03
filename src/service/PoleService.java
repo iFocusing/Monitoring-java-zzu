@@ -1,7 +1,7 @@
 package service;
 
 import bean.Data;
-import bean.DataMapDisplay;
+//import bean.DataMapDisplay;
 import bean.Line;
 import bean.Pole;
 import dao.*;
@@ -35,6 +35,12 @@ public class PoleService {
             poleListList.add(poleList);
         }
         return poleListList;
+    }
+    /**
+     * Created by SLJ
+     */
+    public List<Pole> searchPoleByLine( Long lid) throws Exception {
+        return poleDao.searchPoleByLine(lid);
     }
 }
 
