@@ -374,9 +374,9 @@ public class HChartUtil {
      * @param displayList
      * @return
      */
-//    public String getCurrentData(Date time, double value){
-//        return time == null ? "null" : time.getTime() + "," + value;
-//    }
+    //    public String getCurrentData(Date time, double value){
+    //        return time == null ? "null" : time.getTime() + "," + value;
+    //    }
 
     public String getCurrentPreviousData(List<DataDisplay> displayList) throws ParseException {
         TransferTime transferTime=new TransferTime();
@@ -388,48 +388,48 @@ public class HChartUtil {
         names[3]="湿度(RH%)";
         names[4]="电压(V)";
         names[5]="电流(A)";
-            if(displayList != null && displayList.size() > 0){
-                for(int i=0;i<names.length;i++){
-                    data += "{ name:'" + names[i] + "', data:[";
-                    if(i==0) {
-                        for (DataDisplay piTag : displayList) {
-                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getWireTemperature() + "],";
+        if(displayList != null && displayList.size() > 0){
+            for(int i=0;i<names.length;i++){
+                data += "{ name:'" + names[i] + "', data:[";
+                if(i==0) {
+                    for (DataDisplay piTag : displayList) {
+                        data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getWireTemperature() + "],";
 
-                        }
-                    }else if (i==1){
-                        for (DataDisplay piTag : displayList) {
-                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getOutTemperature() + "],";
-
-                        }
-                    }else if (i==2){
-                        for (DataDisplay piTag : displayList) {
-                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getSag() + "],";
-
-                        }
-                    }else if (i==3){
-                        for (DataDisplay piTag : displayList) {
-                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getHumidity() + "],";
-
-                        }
-                    }else if (i==4){
-                        for (DataDisplay piTag : displayList) {
-                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getVoltage() + "],";
-
-                        }
-                    }else if (i==5){
-                        for (DataDisplay piTag : displayList) {
-                            data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getElectricity() + "],";
-
-                        }
                     }
-                    // 去掉最后的','
-                    if(data.endsWith(",")){
-                        data = data.substring(0, data.length()-1)+ "]},";
-                    }else{
-                        data += "]},";
+                }else if (i==1){
+                    for (DataDisplay piTag : displayList) {
+                        data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getOutTemperature() + "],";
+
+                    }
+                }else if (i==2){
+                    for (DataDisplay piTag : displayList) {
+                        data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getSag() + "],";
+
+                    }
+                }else if (i==3){
+                    for (DataDisplay piTag : displayList) {
+                        data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getHumidity() + "],";
+
+                    }
+                }else if (i==4){
+                    for (DataDisplay piTag : displayList) {
+                        data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getVoltage() + "],";
+
+                    }
+                }else if (i==5){
+                    for (DataDisplay piTag : displayList) {
+                        data += "[" + transferTime.tansfer1(piTag.getSamplingTime()).getTime() + "," + piTag.getElectricity() + "],";
+
                     }
                 }
+                // 去掉最后的','
+                if(data.endsWith(",")){
+                    data = data.substring(0, data.length()-1)+ "]},";
+                }else{
+                    data += "]},";
+                }
             }
+        }
         // 去掉最后一个','
         if(data.endsWith(",")){
             data = data.substring(0, data.length()-1);
@@ -459,17 +459,17 @@ public class HChartUtil {
             for(int i=0;i<names.length;i++){
                 data += "{ name:'" + names[i] + "', time:";
                 if(i==0) {
-                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ", value:" + dataDisplay.getWireTemperature() + "},";
+                    data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ", value:" + dataDisplay.getWireTemperature() + "},";
                 }else if (i==1){
-                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getOutTemperature() + "},";
+                    data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getOutTemperature() + "},";
                 }else if (i==2){
-                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getSag() + "},";
+                    data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getSag() + "},";
                 }else if (i==3){
-                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getHumidity() + "},";
+                    data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getHumidity() + "},";
                 }else if (i==4){
-                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getVoltage() + "},";
+                    data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getVoltage() + "},";
                 }else if (i==5){
-                        data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getElectricity() + "},";
+                    data += transferTime.tansfer1(dataDisplay.getSamplingTime()).getTime() + ",value:" + dataDisplay.getElectricity() + "},";
                 }
             }
         }
