@@ -46,12 +46,12 @@ public class SearchLineServlet extends HttpServlet{
         if("/servlet/SearchMapLineServlet".equals(path)) {
             Long oid= Long.valueOf(request.getParameter("oid"));
             LineService lineService=new LineService();
-            DataService dataService=new DataService();
+            PoleService poleService=new PoleService();
             try {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("lines",lineService.searchLineInOraganization(oid));
-                jsonObject.put("rows",dataService.searchPoleMapByOid(oid));
-                jsonObject.put("total",dataService.searchPoleMapByOid(oid).size());
+                jsonObject.put("rows",poleService.searchPoleMapByOid(oid));
+                jsonObject.put("total",poleService.searchPoleMapByOid(oid).size());
                 System.out.println(jsonObject);
                 PrintWriter out = response.getWriter();
                 out.write(jsonObject.toString());
