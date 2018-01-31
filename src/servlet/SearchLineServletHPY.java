@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 /**
  * Created by hanpengyu on 2016/5/9.
  */
-@WebServlet(name = "SearchLineServlet",urlPatterns = "/servlet/SearchLineServlet")
+@WebServlet(name = "SearchLineServletHPY",urlPatterns = "/servlet/SearchLineServletHPY")
 public class SearchLineServletHPY extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LineService lineService = new LineService();
